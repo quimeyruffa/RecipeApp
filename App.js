@@ -1,23 +1,22 @@
-import { Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import FirstPage from "./pages/FirstPage/FirstPage";
 import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
 
 
 const Stack = createNativeStackNavigator();
 
 
-const ProfileScreen = ({ navigation, route }) => {
-  return <Text>This is {route.params.name}'s profile</Text>;
-};
 export default function App() {
   
 
     return (
       <NavigationContainer>
         <Stack.Navigator>
+          <Stack.Screen name="Home" component={FirstPage} />
           <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Profile" component={ProfileScreen} />
+          <Stack.Screen name="Register" component={Register} />
         </Stack.Navigator>
       </NavigationContainer>
     );

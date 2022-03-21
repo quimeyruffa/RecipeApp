@@ -1,25 +1,24 @@
-import { StatusBar } from "expo-status-bar";
-import {  Pressable, Text, View, Image } from "react-native";
-import styles from "../../styles/style.login";
-const Login = ({ navigation }) => {
-  return (
-    <View style={styles.body}>
-      <Image
-        style={styles.tinyLogo}
-        source={require("../../assets/img/logo.png")}
-      />
-      <View style={styles.container}>
-        <Text style={styles.fontTitle}>Food for Everyone</Text>
-        <Image source={require("../../assets/img/Login.png")} />
+import React from "react";
+import form from "../../styles/style.form";
+import { Image, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import Form_SignIn from "../../components/form/Form_SignIn";
 
-        <Pressable
-          style={styles.button}
-          onPress={() => navigation.navigate("Profile", { name: "Jane" })}
-        >
-          <Text style={styles.text}>Get starteed</Text>
-        </Pressable>
+const Login = (props) => {
+  
+  return (
+    <KeyboardAwareScrollView style={form.container} behavior="height">
+      <View className="container__form">
+        <View className="header__form" style={[form.header, form.shadowProp]}>
+          <Image
+            style={form.logo}
+            source={require("../../assets/img/logoWhite.png")}
+          />
+        </View>
+
+        <Form_SignIn navigation={props.navigation}/>
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 };
 
