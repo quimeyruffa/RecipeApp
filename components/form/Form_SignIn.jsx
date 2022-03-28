@@ -3,7 +3,7 @@ import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import form from "../../styles/style.form";
 import styles from "../../styles/style.login";
 
-const Form_SignIn = ({ navigation }) => {
+const Form_SignIn = ({ navigation, inputs, button }) => {
   const [text, onChangeText] = React.useState("");
   return (
     <ScrollView>
@@ -12,30 +12,25 @@ const Form_SignIn = ({ navigation }) => {
           className="container__formInput"
           style={form.container__formInput}
         >
-          <View>
-            <Text style={form.text}>Email Address</Text>
+          {inputs.map(item =>(
+          <View key={item.id}>
+            <Text style={form.text}>{item.label}</Text>
             <TextInput
               style={form.input}
+              secureTextEntry={item.secureTextEntry}
               onChangeText={onChangeText}
               value={text}
             />
           </View>
+         
+          ))}
 
-          <View>
-            <Text style={form.text}>Email Address</Text>
-            <TextInput
-              style={form.input}
-              secureTextEntry={true}
-              onChangeText={onChangeText}
-              value={text}
-            />
-          </View>
 
           <Pressable
             style={[styles.button, form.button]}
-            onPress={() => navigation.navigate("Register")}
+            onPress={() => navigation.navigate("Menu")}
           >
-            <Text style={[styles.text, form.inputText]}>Login</Text>
+            <Text style={[styles.text, form.inputText]}>{button}</Text>
           </Pressable>
         </View>
       </View>
