@@ -13,7 +13,7 @@ const Login = (props) => {
   ];
 
   const InputRegister = [
-    { id: 4, label: "Email Addres", secureTextEntry: false },
+    { id: 4, label: "Email Address", secureTextEntry: false },
     { id: 3, label: "Alias", secureTextEntry: false },
   ];
   return (

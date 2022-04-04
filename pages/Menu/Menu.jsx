@@ -2,6 +2,7 @@ import { Text, StyleSheet, View, TextInput, Pressable } from "react-native";
 import React, { useState } from "react";
 import { Entypo, FontAwesome } from "@expo/vector-icons";
 import homePage from "../../styles/style.menu";
+import ScrollMenu from "../../components/ScrollMenu/ScrollMenu";
 
 const HomePage = () => {
   const [search, setSearch] = useState("Search");
@@ -14,9 +15,11 @@ const HomePage = () => {
           <TextInput style={homePage.input} onChangeText={setSearch} value={search} />
         </View>
       </View>
+      <View style={homePage.Containerselect}>
       <Pressable style={homePage.select}>
-        <Text> Ingredientes </Text>
+        <Text > Ingredientes </Text>
         </Pressable>
+      </View>
       <View style={homePage.buttonContainer} >
         <Pressable style={homePage.button}>
         <Text> Ingredientes </Text>
@@ -27,7 +30,9 @@ const HomePage = () => {
         </Text>
         </Pressable>
       </View>
-      <Text>Register</Text>
+      <ScrollMenu status='list'/>
+      <ScrollMenu status='card'/>
+
     </View>
   );
 };
