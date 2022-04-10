@@ -1,28 +1,39 @@
 import React from "react";
-import { StyleSheet, View, Button } from "react-native";
+import { StyleSheet, Pressable, Text } from "react-native";
 
 export default ListItem = (props) => {
-  const handleChange = (value) => props.handleSelect(value);
+  const { text, key } = props.item;
+ 
+
 
   return (
-    <View style={styles.item}>
-      <Button
-        id={props.item.key}
-        style={styles.buttom}
-        onPress={() => {
-          handleChange(props.item.key);
-        }}
-        title="Learn More"
-      />
-    </View>
+    <Pressable
+      key={key}
+      id={text}
+      onPress={()=>props.handlePress(text)}
+      style={styles.item}
+    >
+      <Text style={props.press === text ? styles.buttomPressed : styles.buttom}>
+        {" "}
+        {text}
+      </Text>
+    </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
- 
-  buttom:{
-      backgroundColor:'transparent',
-      color:'gray',
+  buttom: {
+    backgroundColor: "transparent",
+    color: "gray",
+    fontSize: 19,
+  },
+  buttomPressed: {
+    backgroundColor: "transparent",
+    color: "#FA4A0C",
+    fontSize: 19,
+    fontWeight: "bold",
+    borderBottomColor:"#FA4A0C",
+    borderBottomWidth:3
   },
   sectionHeader: {
     fontWeight: "800",
@@ -33,6 +44,7 @@ const styles = StyleSheet.create({
   },
   item: {
     margin: 10,
+    marginRight: 15,
   },
   itemPhoto: {
     width: 200,

@@ -1,93 +1,106 @@
-import { StatusBar } from 'expo-status-bar';
-import React, {useState} from 'react';
+import { StatusBar } from "expo-status-bar";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
   SectionList,
   SafeAreaView,
   FlatList,
-} from 'react-native';
-import ListItem from './ListItem';
+} from "react-native";
+import Card from "../Card/Card";
+import ListItem from "./ListItem";
 
+export default ScrollMenu = (props) => {
+  const [press, setPress] = useState("");
 
-
-export default  ScrollMenu = () => {
-const [select, setSelect] = useState(0);
-const handleSelect = (value) => setSelect(value);
+  const handlePress = (value) => setPress(value);
   return (
-    <View style={styles.container}>
+    <View style={props.state === 1 ? styles.container : styles.containerCard}>
       <StatusBar style="light" />
-      <SafeAreaView style={{ flex: 1 }}>
-        <SectionList
-          contentContainerStyle={{ paddingHorizontal: 10 }}
-          stickySectionHeadersEnabled={false}
-          sections={SECTIONS}
-          renderSectionHeader={({ section }) => (
-            <>
-              {section.horizontal ? (
-                <FlatList
-                  horizontal
-                  data={section.data}
-                  renderItem={({ item }) => <ListItem item={item} />}
-                  showsHorizontalScrollIndicator={false}
-                />
-              ) : null}
-            </>
-          )}
-          renderItem={({ item, section }) => {
-            if (section.horizontal) {
-              return null;
-            }
+      {props.state === 1 ? (
+        <SafeAreaView style={{ flex: 1 }}>
+          <SectionList
+            contentContainerStyle={{ paddingHorizontal: 10 }}
+            stickySectionHeadersEnabled={false}
+            sections={SECTIONS}
+            renderSectionHeader={({ section }) => (
+              <>
+                {section.horizontal ? (
+                  <FlatList
+                    horizontal
+                    data={section.data}
+                    renderItem={({ item }) => (
+                      <ListItem
+                        item={item}
+                        handlePress={handlePress}
+                        press={press}
+                      />
+                    )}
+                    showsHorizontalScrollIndicator={false}
+                  />
+                ) : null}
+              </>
+            )}
+            renderItem={({ item, section }) => {
+              if (section.horizontal) {
+                return null;
+              }
 
-            return <ListItem item={item} handleSelect={handleSelect}/>;
-          }}
-        />
-      </SafeAreaView>
+              return <ListItem key={item.key} item={item} />;
+            }}
+          />
+        </SafeAreaView>
+      ) : (
+        <Card />
+      )}
     </View>
   );
 };
 
 const SECTIONS = [
   {
-    
     horizontal: true,
     data: [
       {
-        key: '1',
-        text: 'Item text 1',
+        key: "1",
+        text: "Ensalada",
       },
       {
-        key: '2',
-        text: 'Item text 2',
+        key: "2",
+        text: "Carne",
       },
 
       {
-        key: '3',
-        text: 'Item text 3',
+        key: "3",
+        text: "Salsa",
       },
       {
-        key: '4',
-        text: 'Item text 4',
-    
+        key: "4",
+        text: "Postre",
       },
       {
-        key: '5',
-        text: 'Item text 5',
-   
+        key: "5",
+        text: "Sopa",
+      },
+      {
+        key: "6",
+        text: "Bebida",
       },
     ],
   },
- 
 ];
 
 const styles = StyleSheet.create({
+  containerCard:{
+    height: 380,
+  },
   container: {
-    flex: 1,
+    height: "6%",
   },
   sectionHeader: {
-    fontWeight: '800',
+    fontWeight: "800",
     fontSize: 18,
-    color: '#f4f4f4',
+    color: "#f4f4f4",
     marginTop: 20,
     marginBottom: 5,
   },
@@ -99,7 +112,7 @@ const styles = StyleSheet.create({
     height: 200,
   },
   itemText: {
-    color: 'black',
+    color: "black",
     marginTop: 5,
   },
 });

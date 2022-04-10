@@ -3,7 +3,7 @@ import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import form from "../../styles/style.form";
 import styles from "../../styles/style.login";
 
-const Form_SignIn = ({ navigation, inputs, button }) => {
+const Form_SignIn = ({ navigation, inputs, button, handleToken,token }) => {
   const [text, onChangeText] = React.useState("");
   return (
     <ScrollView>
@@ -12,26 +12,33 @@ const Form_SignIn = ({ navigation, inputs, button }) => {
           className="container__formInput"
           style={form.container__formInput}
         >
-          {inputs.map(item =>(
-          <View key={item.id}>
-            <Text style={form.text}>{item.label}</Text>
-            <TextInput
-              style={form.input}
-              secureTextEntry={item.secureTextEntry}
-              onChangeText={onChangeText}
-              value={text}
-            />
-          </View>
-         
+          {inputs.map((item) => (
+            <View key={item.id}>
+              <Text style={form.text}>{item.label}</Text>
+              <TextInput
+                style={form.input}
+                secureTextEntry={item.secureTextEntry}
+                onChangeText={onChangeText}
+                value={text}
+              />
+            </View>
           ))}
 
-
-          <Pressable
-            style={[styles.button, form.button]}
-            onPress={() => navigation.navigate("Menu")}
-          >
-            <Text style={[styles.text, form.inputText]}>{button}</Text>
-          </Pressable>
+          {token ? (
+            <Pressable
+              style={[styles.button, form.button]}
+              onPress={() => handleToken(true)}
+            >
+              <Text style={[styles.text, form.inputText]}>{button}</Text>
+            </Pressable>
+          ) : (
+            <Pressable
+              style={[styles.button, form.button]}
+              onPress={() => navigation.navigate("Menu")}
+            >
+              <Text style={[styles.text, form.inputText]}>{button}</Text>
+            </Pressable>
+          )}
         </View>
       </View>
     </ScrollView>

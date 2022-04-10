@@ -1,5 +1,11 @@
 import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
+  general:{
+    display:'flex',
+    alignItems:'center',
+    justifyContent:'center',
+    flex:1
+  },
     body: {
       flex: 1,
       backgroundColor: "#FF4B3A"

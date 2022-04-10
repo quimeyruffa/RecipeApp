@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import {  Pressable, Text, View, Image } from "react-native";
 import styles from "../../styles/style.login";
 const FirstPage = ({ navigation }) => {
