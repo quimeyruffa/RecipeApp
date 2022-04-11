@@ -38,12 +38,13 @@ const AllRecipes = () => {
   }
   return (
     <View>
-      <Text>AllRecipes</Text>
+  
       <FlatList 
       data={SECTIONS}
       renderItem={_renderItem}
       keyExtractor={(item, index) => index.toString()}
       numColumns={numColumns}
+      style={{height:'90%'}}
       />
     </View>
   )

@@ -4,7 +4,7 @@ import { Entypo, FontAwesome } from "@expo/vector-icons";
 import homePage from "../../styles/style.menu";
 import ScrollMenu from "../../components/ScrollMenu/ScrollMenu";
 
-const HomePage = (props) => {
+const HomePage = ({ navigation}) => {
   const [search, setSearch] = useState("Search");
   const [change, setChange] = useState(1);
   return (
@@ -46,7 +46,7 @@ const HomePage = (props) => {
           marginTop: 5,
         }}
       >
-        <Pressable onPress={() => props.navigation.navigate("MoreRecipes")}>
+        <Pressable onPress={() => navigation.navigate("AllRecipes")}>
           <Text style={{ color: "#FA4A0C", fontSize: 18, fontWeight: "bold" }}>
             Ver mas
           </Text>

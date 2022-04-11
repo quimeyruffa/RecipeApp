@@ -11,7 +11,7 @@ import { Feather } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import MyRecipes from "../../pages/Recipes/MyRecipes";
 import SaveRecipes from "../../pages/Recipes/SaveRecipes";
-
+import AllRecipes from "../../pages/Recipes/AllRecipes";
 
 const Tab = createBottomTabNavigator();
 
@@ -45,18 +45,22 @@ const Tabs = () => {
         tabBarShowLabel: false,
         tabBarStyle: {
           position: "absolute",
-          bottom: 8,
-          left: 20,
-          right: 20,
+          bottom: 0,
           elevation: 0,
           backgroundColor: "#F2F2F2",
-          borderRadius: 15,
           height: 90,
         },
       }}
-    >
       
-     
+    >
+       <Tab.Screen
+        name="AllRecipes"
+        component={AllRecipes}
+        options={{
+          tabBarButton: (props) => null, //like this
+          tabBarVisible: false, //this is additional if you want to hide the whole bottom tab from the screen
+        }}
+        />     
       <Tab.Screen
         name="Home"
         component={HomePage}
