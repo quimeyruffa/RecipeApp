@@ -27,6 +27,7 @@ const CustomTabBarButton = ({ children, onPress }) => (
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
+        zIndex:20
       }}
     >
       {" "}
