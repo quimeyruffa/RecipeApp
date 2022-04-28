@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Entypo, FontAwesome } from "@expo/vector-icons";
 import homePage from "../../styles/style.menu";
 import ScrollMenu from "../../components/ScrollMenu/ScrollMenu";
-import { MaterialIcons } from "@expo/vector-icons";
 import PNG from '../../assets/img/IngredientesButton.png'
 const HomePage = ({ navigation }) => {
   const [search, setSearch] = useState("Search");
@@ -50,6 +49,7 @@ const HomePage = ({ navigation }) => {
             Ver mas
           </Text>
         </Pressable>
+        
       </View>
     </View>
   );

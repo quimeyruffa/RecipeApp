@@ -12,6 +12,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import MyRecipes from "../../pages/Recipes/MyRecipes";
 import SaveRecipes from "../../pages/Recipes/SaveRecipes";
 import AllRecipes from "../../pages/Recipes/AllRecipes";
+import DetailsCardRecipe from "../Card/DetailsCardRecipe";
 
 const Tab = createBottomTabNavigator();
 
@@ -27,6 +28,7 @@ const CustomTabBarButton = ({ children, onPress }) => (
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
+        zIndex:20
       }}
     >
       {" "}
@@ -84,6 +86,18 @@ const Tabs = () => {
             tabBarVisible: false, //this is additional if you want to hide the whole bottom tab from the screen
           }}
         />
+        <Tab.Screen
+          name="DetailRecipe"
+          component={DetailsCardRecipe}
+          options={{
+            tabBarButton: (props) => null, //like this
+            tabBarVisible: false, //this is additional if you want to hide the whole bottom tab from the screen
+          }}
+        />
+
+        
+
+        
         <Tab.Screen
           name="Recipes"
           component={MyRecipes}

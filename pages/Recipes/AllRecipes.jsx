@@ -1,6 +1,6 @@
 import { View, Text, FlatList } from 'react-native'
 import React from 'react'
-import CardItem from '../../components/Card/CardItem';
+import AllCardFormat from '../../components/Card/AllCardFormat';
 
 const SECTIONS = [
         {
@@ -34,7 +34,7 @@ const numColumns = 2;
 // const width = Dimensions.get('window').width
 const AllRecipes = () => {
   const _renderItem = () => {
-    return(<CardItem />)
+    return(<AllCardFormat />)
   }
   return (
     <View>
