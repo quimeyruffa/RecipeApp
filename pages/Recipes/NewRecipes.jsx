@@ -6,6 +6,7 @@ import AddImg from "../../assets/img/addImage.png";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { AntDesign } from "@expo/vector-icons";
 import PNG from '../../assets/img/addIcon.png';
+import DropDownPickerModel from "../../components/DropDownPiker/DropDownPiker";
 const NewRecipes = () => {
   const [cant, setCant] = useState(1);
   const [text, onChangeText] = useState("");
@@ -184,6 +185,7 @@ const NewRecipes = () => {
 
           <View style={styles.row}>
             <Text style={styles.title}>Unidad</Text>
+            
           </View>
         </View>
       </View>
