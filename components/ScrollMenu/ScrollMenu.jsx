@@ -10,7 +10,7 @@ import {
 import Card from "../Card/Card";
 import ListItem from "./ListItem";
 
-export default ScrollMenu = (props) => {
+const ScrollMenu = (props) => {
   const [press, setPress] = useState("");
 
   const handlePress = (value) => setPress(value);
@@ -56,7 +56,7 @@ export default ScrollMenu = (props) => {
     </View>
   );
 };
-
+export default ScrollMenu;
 const SECTIONS = [
   {
     horizontal: true,

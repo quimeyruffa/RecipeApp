@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Pressable, Text } from "react-native";
 
-export default ListItem = (props) => {
+ const ListItem = (props) => {
   const { text, key } = props.item;
  
 
@@ -20,6 +20,8 @@ export default ListItem = (props) => {
     </Pressable>
   );
 };
+export default ListItem;
+
 
 const styles = StyleSheet.create({
   buttom: {
