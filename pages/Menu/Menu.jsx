@@ -1,12 +1,31 @@
 import { Text, View, Image, TextInput, Pressable } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Entypo, FontAwesome } from "@expo/vector-icons";
 import homePage from "../../styles/style.menu";
 import ScrollMenu from "../../components/ScrollMenu/ScrollMenu";
 import PNG from '../../assets/img/IngredientesButton.png'
+import { useDispatch } from "react-redux";
+import axios from 'axios';
+import { RECIPES } from "../../src/redux/UserItems";
 const HomePage = ({ navigation }) => {
   const [search, setSearch] = useState("Search");
-  const [change, setChange] = useState(1);
+  const [recipes, setRecipes] =  useState();
+  const dispatch = useDispatch();
+
+  useEffect(()=>{handleGetRecipes()},[])
+
+  const handleGetRecipes = async () => {
+    await axios.get('http://10.0.2.2:3000/recipes')
+    .then(resp => {
+      data = resp.data;
+      setRecipes(data)
+      handleAllRecipes(data)
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  }
+  const handleAllRecipes = (data) => dispatch({ type: RECIPES, payload: data });
   return (
     <View style={homePage.container}>
       <View style={homePage.buttonContainer}>
@@ -33,7 +52,7 @@ const HomePage = ({ navigation }) => {
       </View>
 
       <ScrollMenu status="list" state={1} />
-      <ScrollMenu status="list" state={2} />
+      <ScrollMenu status="list" state={2}  recipes={recipes}/>
       <View
         style={{
           width: "100%",
