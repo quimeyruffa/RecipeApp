@@ -3,8 +3,9 @@ import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import form from "../../styles/style.form";
 import styles from "../../styles/style.login";
 
-const Form_SignIn = ({ navigation, inputs, button, handleToken,token }) => {
-  const [text, onChangeText] = React.useState("");
+const Form_SignIn = ({ inputs, button, handleSubmit,email, handleEmail }) => {
+ 
+  
   return (
     <ScrollView>
       <View className="body__form" style={form.body}>
@@ -18,27 +19,20 @@ const Form_SignIn = ({ navigation, inputs, button, handleToken,token }) => {
               <TextInput
                 style={form.input}
                 secureTextEntry={item.secureTextEntry}
-                onChangeText={onChangeText}
-                value={text}
+                onChangeText={handleEmail}
+                value={email}
               />
             </View>
           ))}
 
-          {token ? (
+         
             <Pressable
               style={[styles.button, form.button]}
-              onPress={() => handleToken(true)}
+              onPress={() => handleSubmit()}
             >
               <Text style={[styles.text, form.inputText]}>{button}</Text>
             </Pressable>
-          ) : (
-            <Pressable
-              style={[styles.button, form.button]}
-              onPress={() => navigation.navigate("Menu")}
-            >
-              <Text style={[styles.text, form.inputText]}>{button}</Text>
-            </Pressable>
-          )}
+          
         </View>
       </View>
     </ScrollView>

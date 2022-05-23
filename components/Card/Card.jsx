@@ -6,7 +6,10 @@ import {
   } from "react-native";
 import CardItem from './CardItem';
 
-const Card = () => {
+const Card = (props) => {
+  const {recipes} = props;
+
+  // THISSS
     
   return (
     <SafeAreaView style={{ flex: 1 }}>

@@ -1,0 +1,66 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "first_name": "Robert",
+      "last_name": "Schwartz",
+      "email": "rob23@gmail.com"
+    },
+    {
+      "id": 2,
+      "first_name": "Lucy",
+      "last_name": "Ballmer",
+      "email": "lucyb56@gmail.com"
+    },
+    {
+      "id": 3,
+      "first_name": "Anna",
+      "last_name": "Smith",
+      "email": "annasmith23@gmail.com"
+    },
+    {
+      "id": 4,
+      "first_name": "Robert",
+      "last_name": "Brown",
+      "email": "bobbrown432@yahoo.com"
+    },
+    {
+      "id": 5,
+      "first_name": "Roger",
+      "last_name": "Bacon",
+      "email": "rogerbacon12@yahoo.com"
+    }
+  ],
+  "recipes":[
+    {
+      "id": "recipy-1",
+      "name":"nombre",
+      "img":"https://res.cloudinary.com/dv8hvjcim/image/upload/v1653199601/dev_setups/comida1_jvnotj.png"
+    },
+    {
+      "id": "recipy-2",
+      "name":"nombre",
+      "img":"https://res.cloudinary.com/dv8hvjcim/image/upload/v1653199639/dev_setups/c_kwrfpj.png"
+    },
+    {
+      "id":"recipy-3",
+      "name":"nombre",
+      "img":"https://res.cloudinary.com/dv8hvjcim/image/upload/v1653199640/dev_setups/comida2_zncvhq.png"
+    },
+    {
+      "id": "recipy-4",
+      "name":"nombre",
+      "img":"https://res.cloudinary.com/dv8hvjcim/image/upload/v1653199640/dev_setups/d4_cglduf.png"
+    },
+    {
+      "id": "recipy-5",
+      "name":"nombre",
+      "img":"https://res.cloudinary.com/dv8hvjcim/image/upload/v1653199640/dev_setups/c2_ky8kgp.png"
+    },
+    {
+      "id": "recipy-6",
+      "name":"nombre",
+      "img":"https://res.cloudinary.com/dv8hvjcim/image/upload/v1653199640/dev_setups/comida_nnvbvd.png"
+    }
+  ]
+}

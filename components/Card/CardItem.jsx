@@ -6,6 +6,7 @@ import { Feather } from "@expo/vector-icons";
 const CardItem = (props) => {
   const [select, setSelect] = useState(false);
   const handleSelect = (value) => setSelect(value);
+  const {item} = props;
   return (
     <View style={styles.cardContainer}>
       <View style={[styles.card, styles.shadow]}>
@@ -20,11 +21,11 @@ const CardItem = (props) => {
         <View style={styles.general}>
           <Image
             style={styles.img}
-            source={require("../../assets/img/comida.png")}
+            source={item.img}
           />
         </View>
         <View style={styles.general}>
-          <Text style={styles.name}>Ensalada con salmón </Text>
+          <Text style={styles.name}>{item.name} </Text>
         </View>
         <View style={[styles.general, styles.row]}>
           <Feather name="user" size={24} color="#FA4A0C" />

@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -10,8 +10,11 @@ import {
 import Card from "../Card/Card";
 import ListItem from "./ListItem";
 
-export default ScrollMenu = (props) => {
+const ScrollMenu = (props) => {
   const [press, setPress] = useState("");
+  const { recipes } = props;
+
+  useEffect(() => {}, [recipes]);
 
   const handlePress = (value) => setPress(value);
   return (
@@ -51,12 +54,12 @@ export default ScrollMenu = (props) => {
           />
         </SafeAreaView>
       ) : (
-        <Card />
+        <Card recipes={recipes} />
       )}
     </View>
   );
 };
-
+export default ScrollMenu;
 const SECTIONS = [
   {
     horizontal: true,
@@ -91,7 +94,7 @@ const SECTIONS = [
 ];
 
 const styles = StyleSheet.create({
-  containerCard:{
+  containerCard: {
     height: 380,
   },
   container: {
