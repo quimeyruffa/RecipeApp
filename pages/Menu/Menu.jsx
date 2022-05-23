@@ -1,12 +1,21 @@
-import { Text, View, Image, TextInput, Pressable } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  TextInput,
+  Pressable,
+  StyleSheet,
+} from "react-native";
 import React, { useState } from "react";
 import { Entypo, FontAwesome } from "@expo/vector-icons";
 import homePage from "../../styles/style.menu";
 import ScrollMenu from "../../components/ScrollMenu/ScrollMenu";
-import PNG from '../../assets/img/IngredientesButton.png'
+import PNG from "../../assets/img/IngredientesButton.png";
+import IngredientesModal from "../../components/Modal/Modal";
 const HomePage = ({ navigation }) => {
   const [search, setSearch] = useState("Search");
-  const [change, setChange] = useState(1);
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <View style={homePage.container}>
       <View style={homePage.buttonContainer}>
@@ -16,11 +25,19 @@ const HomePage = ({ navigation }) => {
           color="black"
           style={{ paddingTop: 5, paddingLeft: 15 }}
         />
-        <Pressable style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}} >
-            <Image style={homePage.button} source={PNG} />
+        <Pressable
+          onPress={() => setModalVisible(!modalVisible)}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Image style={homePage.button} source={PNG} />
         </Pressable>
       </View>
-
+      {modalVisible && <IngredientesModal  modalVisible={modalVisible} setModalVisible={setModalVisible}/>}
       <View>
         <View style={homePage.inputContainer}>
           <FontAwesome name="search" size={24} color="black" />
@@ -49,10 +66,16 @@ const HomePage = ({ navigation }) => {
             Ver mas
           </Text>
         </Pressable>
-        
       </View>
     </View>
   );
 };
 
 export default HomePage;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+  },
+});
