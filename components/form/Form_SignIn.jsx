@@ -1,11 +1,11 @@
-import React from "react";
+import React, {  } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import form from "../../styles/style.form";
 import styles from "../../styles/style.login";
 
-const Form_SignIn = ({ inputs, button, handleSubmit,email, handleEmail }) => {
+const Form_SignIn = ({ inputs, button, handleSubmit,value, handleChangeValue,  }) => {
  
-  
+
   return (
     <ScrollView>
       <View className="body__form" style={form.body}>
@@ -19,8 +19,8 @@ const Form_SignIn = ({ inputs, button, handleSubmit,email, handleEmail }) => {
               <TextInput
                 style={form.input}
                 secureTextEntry={item.secureTextEntry}
-                onChangeText={handleEmail}
-                value={email}
+                onChangeText={(e) => handleChangeValue(e, item.name)}
+                value={value[item.value]}
               />
             </View>
           ))}

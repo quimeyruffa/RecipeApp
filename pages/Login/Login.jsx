@@ -9,15 +9,28 @@ import { TOKEN } from "../../src/redux/UserItems";
 
 const Login = (props) => {
   const [tabs, setTabs] = useState(1);
-  const [email, setEmail] = useState("");
+  const [token, setToken] = useState();
+  const [user, setUser] = useState({
+    username:'',
+    password:'',
+  })
   const dispatch = useDispatch();
 
-  const handleToken = () => dispatch({ type: TOKEN, payload: false });
+  const handleToken = (value) => dispatch({ type: TOKEN, payload: value });
 
-  const handleEmail = (e) => setEmail(e);
+
+  const handleChangeValue = (e, value) => {
+    switch(value){
+      case 'username':
+        return setUser({...user, 'username':e})
+      case 'password':
+        return setUser({...user, 'password':e})
+    }
+  }
+
   const InputLogin = [
-    { id: 1, label: "Email Address", secureTextEntry: false },
-    { id: 2, label: "Password", secureTextEntry: true },
+    { id: 1, label: "Alias", name:'username', secureTextEntry: false },
+    { id: 2, label: "Password",name:'password', secureTextEntry: true },
   ];
 
   const InputRegister = [
@@ -26,28 +39,19 @@ const Login = (props) => {
   ];
 
   const handleLogin = async () => {
-    
+    console.log(user)
     await axios
-      .get("http://10.0.2.2:3000/users")
+      .post("https://adapicooking.herokuapp.com/api/users/login/", user)
       .then((resp) => {
-        let data = resp.data;
-        const found = data.find((e) => e.email === email);
-        AccessLogin('success');
+        handleToken(resp.data.token)
+        
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  const AccessLogin = (found) => {
-    switch (found) {
-      case 'success':
-        handleToken();
 
-      default:
-        return null;
-    }
-  };
 
   return (
     <KeyboardAwareScrollView style={form.container} behavior="height">
@@ -77,18 +81,18 @@ const Login = (props) => {
             inputs={InputLogin}
             navigation={props.navigation}
             button="Login"
-            handleEmail={handleEmail}
+            handleChangeValue={handleChangeValue}
             handleSubmit={handleLogin}
-            email={email}
+            value={user}
           />
         ) : (
           <Form_SignIn
             inputs={InputRegister}
             navigation={props.navigation}
             button="Register"
-            handleEmail={handleEmail}
+            handleChangeValue={handleChangeValue}
             handleSubmit={handleLogin}
-            email={email}
+            value={user}
           />
         )}
       </View>
