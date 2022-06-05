@@ -72,7 +72,7 @@ const Receta = (props) => {
       imagen: img,
       porciones: cantPorciones,
       cantidadPersonas: cantPorciones,
-      tipo: tipo,
+      tipo: null,
     };
     console.log(array);
     await axios
