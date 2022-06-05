@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -7,12 +7,13 @@ import {
   SafeAreaView,
   FlatList,
 } from "react-native";
+import NotiContext from "../../Context/notifications/NotiContext";
 import Card from "../Card/Card";
 import ListItem from "./ListItem";
 
 const ScrollMenu = (props) => {
   const [press, setPress] = useState("");
-  const { recipes } = props;
+  const { recipes } = useContext(NotiContext);
 
   useEffect(() => {}, [recipes]);
 

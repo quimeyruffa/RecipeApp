@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Text, View, StyleSheet, Image } from "react-native";
 import {
   FontAwesome,
@@ -9,11 +9,15 @@ import {
   Entypo,
 } from "@expo/vector-icons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import NotiContext from "../../Context/notifications/NotiContext";
 
 const DetailsCardRecipe = () => {
+  const { details_recipe } = useContext(NotiContext);
+  const [index, setIndex] = useState(0);
   const [select, setSelect] = useState(false);
   const [fav, setFav] = useState(false);
   const handleSelect = (value) => setSelect(value);
+  const unidades = ["kg", "ml", "l", "g", "Taza"];
   const data = [
     { key: "300 gr tomates cherry" },
     { key: "1 unidad de lechuga" },
@@ -80,15 +84,15 @@ const DetailsCardRecipe = () => {
 
         <View style={[styles.general, styles.row]}>
           <Feather name="user" size={24} color="#FA4A0C" />
-          <Text style={styles.cantPersonas}> 3 personas</Text>
+          <Text style={styles.cantPersonas}>{details_recipe.cantidadPersonas} {details_recipe.cantidadPersonas > 1 ? 'personas':'persona'}</Text>
         </View>
 
         <View style={[styles.general]}>
-          <Text style={styles.name}>Ensalada con salmón </Text>
+          <Text style={styles.name}>{details_recipe.nombre}</Text>
         </View>
 
         <View style={[styles.general, styles.row]}>
-          <Text style={styles.tipoReceta}> Tipo de receta: Ensalada</Text>
+          <Text style={styles.tipoReceta}> Tipo de receta: {details_recipe.tipo}</Text>
         </View>
 
         <View style={[styles.generalSubTitle]}>
@@ -97,21 +101,20 @@ const DetailsCardRecipe = () => {
 
         <View style={[styles.generalSubTitle]}>
           <Text style={styles.subTitleDes}>
-            {" "}
-            Ensalda de tomate con otros vegetales, perfecto para un almuerzo de
-            verano!{" "}
+            {details_recipe.descripcion}
           </Text>
         </View>
 
         <View style={[styles.generalSubTitle]}>
           <Text style={styles.subTitle}> Ingredientes </Text>
-          {data.map((item) => (
-            <Text key={item.key} style={styles.subTitleDes}>
-              {item.key}
+          {details_recipe.utilizados.map((ingrediente, index) => (
+            <Text key={index} style={styles.subTitleDes}>
+              {ingrediente.ingrediente} {ingrediente.cantidad} {unidades[ingrediente.unidad - 1]}
             </Text>
           ))}
         </View>
 
+      {details_recipe.pasos && 
         <View style={[styles.generalSubTitle]}>
           <Text style={styles.subTitle}> Pasos </Text>
           <View>
@@ -124,7 +127,7 @@ const DetailsCardRecipe = () => {
                 padding: 5,
               }}
             >
-              <Text style={styles.subTitleDes}>1. Cortar los vegetales</Text>
+              <Text style={styles.subTitleDes}>{index + 1}. {details_recipe.pasos[index].texto}</Text>
               <View
                 style={{
                   display: "flex",
@@ -134,12 +137,12 @@ const DetailsCardRecipe = () => {
                   marginTop: 10,
                 }}
               >
-                <Ionicons name="chevron-back" size={35} color="#747272" />
+               {index !== 0 ? <Ionicons name="chevron-back" size={35} color="#747272" onPress={() =>  setIndex(index - 1)}/> : <Ionicons name="chevron-back" size={35} color="#F2F2F2" />}
                 <Image
                   style={[styles.imgStep]}
                   source={require("../../assets/img/plato.png")}
                 />
-                <MaterialIcons name="navigate-next" size={35} color="#747272" />
+               {index +1 !== details_recipe.pasos.length ? <MaterialIcons name="navigate-next" size={35} color="#747272" onPress={() =>  setIndex(index + 1)}/> : <MaterialIcons name="navigate-next" size={35} color="#F2F2F2" /> }
               </View>
 
               <View
@@ -151,15 +154,16 @@ const DetailsCardRecipe = () => {
                   marginTop: 10,
                 }}
               >
-                <Entypo name="dot-single" size={40} color="#FA4A0C" />
-                <Entypo name="dot-single" size={40} color="#747272" />
-                <Entypo name="dot-single" size={40} color="#747272" />
-                <Entypo name="dot-single" size={40} color="#747272" />
-                <Entypo name="dot-single" size={40} color="#747272" />
+                {details_recipe.pasos.map((item, i) =>{
+                  return (
+                    <Entypo key={i} name="dot-single" size={40} color={index === i ? "#FA4A0C" : "#747272"} />
+                  )
+                })}
               </View>
             </View>
           </View>
         </View>
+}
       </View>
     </KeyboardAwareScrollView>
   );

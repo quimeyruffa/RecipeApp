@@ -15,7 +15,7 @@ const homePage = StyleSheet.create({
     borderTopRightRadius: 40,
     height: 35,
     alignItems: "center",
-    margin: 15,
+    margin: 5,
     paddingLeft: 10,
   },
   input: {
@@ -48,7 +48,7 @@ const homePage = StyleSheet.create({
     borderWidth: 0,
     width: 95,
     height: 95,
-    margin:8,
+    margin:0,
     marginRight:25,
     display: "flex",
     alignItems: "center",

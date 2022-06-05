@@ -1,19 +1,68 @@
-import React from "react";
-import { Text, View, StyleSheet} from "react-native";
+import React, { useEffect } from "react";
+import {  Text, View, StyleSheet, SafeAreaView, FlatList} from "react-native";
 import { Feather } from "@expo/vector-icons";
+import { useContext } from "react";
+import NotiContext from "../../Context/notifications/NotiContext";
+import styles from "../../styles/style.recipe";
+import Item from "../../components/Card/Item";
+import axios from "axios";
+import { URL } from "../../Context/type";
 
 const MyRecipes = () => {
+  const {handleMyRecipes, my_recipes, token} = useContext(NotiContext);
+  
+
+  useEffect(()=>{handleMyRecipes()},[])
+
+  useEffect(()=>{},[my_recipes])
+
+  const handleDeleteRecipe = async (index) => {
+    console.log(index)
+  await axios
+    .delete(`${URL}api/recetas/${index}/`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then(async() => {
+      await handleMyRecipes()
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
   return (
-    <View style={[styles.general]}>
-      <Feather name="calendar" size={200} color="#C7C7C7" />
-      <Text style={[styles.text]}>No publicaste ninguna receta</Text>
+    <View style={{flex:1}}>
+    
+    {my_recipes ?
+      <View style={styles.container}>
+        <Text style={{fontSize:20, marginBottom:10}}>Mis Recetas</Text>
+        <FlatList 
+          data={my_recipes}
+          renderItem={({item}) =>{
+            
+            return <Item data={item} handleDeleteRecipe={handleDeleteRecipe}/>
+          }}
+          ItemSeparatorComponent={()=>{
+            return <View style={{marginBottom:5}}></View>
+          }}
+        />
+
+          
+      </View>
+    :
+      <View style={[style.general]}>
+        <Feather name="calendar" size={200} color="#C7C7C7" />
+        <Text style={[style.text]}>No publicaste ninguna receta</Text>
+      </View>
+    
+    }
+    
     </View>
   );
 };
 
 export default MyRecipes;
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   general:{
     display:'flex',
     alignItems:'center',

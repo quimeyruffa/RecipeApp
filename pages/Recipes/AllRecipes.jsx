@@ -1,6 +1,7 @@
 import { View, Text, FlatList } from 'react-native'
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import AllCardFormat from '../../components/Card/AllCardFormat';
+import NotiContext from '../../Context/notifications/NotiContext';
 
 const SECTIONS = [
         {
@@ -33,15 +34,18 @@ const SECTIONS = [
 const numColumns = 2;
 // const width = Dimensions.get('window').width
 const AllRecipes = () => {
-  const _renderItem = () => {
-    return(<AllCardFormat />)
+  const { recipes, handleGetRecipes } = useContext(NotiContext);
+  useEffect(()=>{handleGetRecipes(),[]})
+  useEffect(() => {}, [recipes]);
+  const _renderItem = (e) => {
+    return(<AllCardFormat recipe={ e.item} />)
   }
   return (
     <View>
   
       <FlatList 
-      data={SECTIONS}
-      renderItem={_renderItem}
+      data={recipes}
+      renderItem={(e) => _renderItem(e)}
       keyExtractor={(item, index) => index.toString()}
       numColumns={numColumns}
       style={{height:'90%'}}

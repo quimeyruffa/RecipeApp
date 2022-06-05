@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { Text, View, StyleSheet, Image } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import Img from '../../assets/img/comida.png'
 
 const CardItem = (props) => {
   const [select, setSelect] = useState(false);
   const handleSelect = (value) => setSelect(value);
   const {item} = props;
+  
   return (
     <View style={styles.cardContainer}>
       <View style={[styles.card, styles.shadow]}>
@@ -21,15 +23,15 @@ const CardItem = (props) => {
         <View style={styles.general}>
           <Image
             style={styles.img}
-            source={item.img}
+            source={Img}
           />
         </View>
         <View style={styles.general}>
-          <Text style={styles.name}>{item.name} </Text>
+          <Text style={styles.name}>{item?.nombre} </Text>
         </View>
         <View style={[styles.general, styles.row]}>
           <Feather name="user" size={24} color="#FA4A0C" />
-          <Text style={styles.cantPersonas}> 3 personas</Text>
+          <Text style={styles.cantPersonas}> {item?.cantidadPersonas} personas</Text>
         </View>
       </View>
     </View>
