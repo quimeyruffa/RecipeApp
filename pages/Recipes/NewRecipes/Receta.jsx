@@ -66,6 +66,7 @@ const Receta = (props) => {
   };
 
   const handleSubmitRecipe = async () => {
+    console.log(img)
     let array = {
       nombre: text,
       descripcion: des,

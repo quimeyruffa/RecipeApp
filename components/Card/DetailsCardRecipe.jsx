@@ -84,15 +84,15 @@ const DetailsCardRecipe = () => {
 
         <View style={[styles.general, styles.row]}>
           <Feather name="user" size={24} color="#FA4A0C" />
-          <Text style={styles.cantPersonas}>{details_recipe.cantidadPersonas} {details_recipe.cantidadPersonas > 1 ? 'personas':'persona'}</Text>
+          <Text style={styles.cantPersonas}>{details_recipe?.cantidadPersonas} {details_recipe?.cantidadPersonas > 1 ? 'personas':'persona'}</Text>
         </View>
 
         <View style={[styles.general]}>
-          <Text style={styles.name}>{details_recipe.nombre}</Text>
+          <Text style={styles.name}>{details_recipe?.nombre}</Text>
         </View>
 
         <View style={[styles.general, styles.row]}>
-          <Text style={styles.tipoReceta}> Tipo de receta: {details_recipe.tipo}</Text>
+          <Text style={styles.tipoReceta}> Tipo de receta: {details_recipe?.tipo}</Text>
         </View>
 
         <View style={[styles.generalSubTitle]}>
@@ -101,20 +101,20 @@ const DetailsCardRecipe = () => {
 
         <View style={[styles.generalSubTitle]}>
           <Text style={styles.subTitleDes}>
-            {details_recipe.descripcion}
+            {details_recipe?.descripcion}
           </Text>
         </View>
 
         <View style={[styles.generalSubTitle]}>
           <Text style={styles.subTitle}> Ingredientes </Text>
-          {details_recipe.utilizados.map((ingrediente, index) => (
+          {details_recipe?.utilizados.map((ingrediente, index) => (
             <Text key={index} style={styles.subTitleDes}>
-              {ingrediente.ingrediente} {ingrediente.cantidad} {unidades[ingrediente.unidad - 1]}
+              {ingrediente?.ingrediente} {ingrediente?.cantidad} {unidades[ingrediente?.unidad - 1]}
             </Text>
           ))}
         </View>
 
-      {details_recipe.pasos && 
+      {details_recipe?.pasos && 
         <View style={[styles.generalSubTitle]}>
           <Text style={styles.subTitle}> Pasos </Text>
           <View>
@@ -127,7 +127,7 @@ const DetailsCardRecipe = () => {
                 padding: 5,
               }}
             >
-              <Text style={styles.subTitleDes}>{index + 1}. {details_recipe.pasos[index].texto}</Text>
+              <Text style={styles.subTitleDes}>{index + 1}. {details_recipe?.pasos[index].texto}</Text>
               <View
                 style={{
                   display: "flex",
@@ -142,7 +142,7 @@ const DetailsCardRecipe = () => {
                   style={[styles.imgStep]}
                   source={require("../../assets/img/plato.png")}
                 />
-               {index +1 !== details_recipe.pasos.length ? <MaterialIcons name="navigate-next" size={35} color="#747272" onPress={() =>  setIndex(index + 1)}/> : <MaterialIcons name="navigate-next" size={35} color="#F2F2F2" /> }
+               {index +1 !== details_recipe?.pasos.length ? <MaterialIcons name="navigate-next" size={35} color="#747272" onPress={() =>  setIndex(index + 1)}/> : <MaterialIcons name="navigate-next" size={35} color="#F2F2F2" /> }
               </View>
 
               <View
@@ -154,7 +154,7 @@ const DetailsCardRecipe = () => {
                   marginTop: 10,
                 }}
               >
-                {details_recipe.pasos.map((item, i) =>{
+                {details_recipe?.pasos.map((item, i) =>{
                   return (
                     <Entypo key={i} name="dot-single" size={40} color={index === i ? "#FA4A0C" : "#747272"} />
                   )
