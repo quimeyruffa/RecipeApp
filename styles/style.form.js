@@ -40,7 +40,7 @@ const form = StyleSheet.create({
   body: {
     alignItems: "center",
     paddingTop: 90,
-    height:400,
+    height:600,
   },
   button: {
       backgroundColor:"#FA4A0C",

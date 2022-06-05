@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import {  Text, View, StyleSheet, SafeAreaView, FlatList} from "react-native";
+import {  Text, View, StyleSheet, FlatList} from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useContext } from "react";
 import NotiContext from "../../Context/notifications/NotiContext";
@@ -14,7 +14,7 @@ const MyRecipes = () => {
 
   useEffect(()=>{handleMyRecipes()},[])
 
-  useEffect(()=>{},[my_recipes])
+  useEffect(()=>{console.log(my_recipes)},[my_recipes])
 
   const handleDeleteRecipe = async (index) => {
     console.log(index)
@@ -32,7 +32,7 @@ const MyRecipes = () => {
   return (
     <View style={{flex:1}}>
     
-    {my_recipes ?
+    {!(my_recipes === []) ?
       <View style={styles.container}>
         <Text style={{fontSize:20, marginBottom:10}}>Mis Recetas</Text>
         <FlatList 

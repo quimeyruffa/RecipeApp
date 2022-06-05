@@ -1,4 +1,4 @@
-import { View, Text, FlatList } from 'react-native'
+import { View, FlatList } from 'react-native'
 import React, { useContext, useEffect } from 'react'
 import AllCardFormat from '../../components/Card/AllCardFormat';
 import NotiContext from '../../Context/notifications/NotiContext';

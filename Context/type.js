@@ -6,3 +6,4 @@ export const CREATE_RECIPE ='CREATE_RECIPE';
 export const USERNAME ='USERNAME';
 export const MY_RECIPES= 'MY_RECIPES';
 export const DETAILS_RECIPE = 'DETAILS_RECIPE';
+export const INGREDIENTES = 'INGREDIENTES'

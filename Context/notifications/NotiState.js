@@ -12,14 +12,15 @@ const NotiState = (props) => {
     my_recipes:[],
     unidades:[],
     create_recipe:'',
-    details_recipe:undefined
+    details_recipe:undefined,
+    Ingredientes:[]
   };
 
   const [state, dispatch] = useReducer(NotiReducer, initialState);
 
 
   const handleMyRecipes = async () => {
-  
+    console.log('token', state.token)
     await axios
     .get(`${URL}api/recetas/?user=${state.username}`, { headers: {"Authorization" : `Bearer ${state.token}`} })
     .then((resp) => {
@@ -30,6 +31,25 @@ const NotiState = (props) => {
       console.log(error);
     });
   }
+
+  const handleRegister = async (user) => {
+    console.log(user)
+    let res=false
+    await axios
+      .post("https://adapicooking.herokuapp.com/api/users/register/", user)
+      .then((resp) => {
+        console.log(resp)
+        dispatch({ type: 'USERNAME', payload:resp.data.username })
+        dispatch({ type: 'TOKEN', payload: resp.data.token })
+        
+      })
+      .catch((error) => {
+        res=true
+        console.log(error);
+      });
+
+      return res;
+  }
   const handleLogin = async (user) => {
     let res=false
     await axios
@@ -38,6 +58,7 @@ const NotiState = (props) => {
         console.log(resp)
         dispatch({ type: 'USERNAME', payload:resp.data.username })
         dispatch({ type: 'TOKEN', payload: resp.data.token })
+        
       })
       .catch((error) => {
         res=true
@@ -88,6 +109,21 @@ const NotiState = (props) => {
   });
 
   }
+
+  const handleGetIngredientes = async () =>{
+    // {{URL}}api/recetas/ingredientes/
+
+    await axios.get(`${URL}api/recetas/ingredientes/`, { headers: {"Authorization" : `Bearer ${state.token}`} })
+    .then(resp => {
+      console.log(resp.data)
+      dispatch({ type: 'INGREDIENTES', payload: resp.data })
+
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  }
+
   return (
     <NotiContext.Provider
       value={{
@@ -97,12 +133,15 @@ const NotiState = (props) => {
         create_recipe:state.create_recipe,
         my_recipes:state.my_recipes,
         details_recipe:state.details_recipe,
+        Ingredientes:state.Ingredientes,
         handleLogin,
         handleGetRecipes,
         getUnidades,
         handleCreateRecipe,
         handleMyRecipes,
-        handleDetailsRecipe
+        handleDetailsRecipe,
+        handleGetIngredientes,
+        handleRegister
       }}
     >
       {props.children}

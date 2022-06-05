@@ -3,55 +3,84 @@ import form from "../../styles/style.form";
 import { Image, View, Text, Pressable } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Form_SignIn from "../../components/form/Form_SignIn";
-import { Feather } from '@expo/vector-icons';
+import { Feather } from "@expo/vector-icons";
 import NotiContext from "../../Context/notifications/NotiContext";
 import IngredientesModal from "../../components/Modal/Modal";
 
 const Login = (props) => {
   const [tabs, setTabs] = useState(1);
   const [modalVisible, setModalVisible] = useState(false);
-  const {handleLogin} = useContext(NotiContext)
-  const [loading, setLoading]= useState(false)
+  const { handleLogin, handleRegister } = useContext(NotiContext);
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({
-    username:'',
-    password:'',
-  })
-  
-
+    username: "",
+    password: "",
+  });
+  const [register, setRegister] = useState({
+    username: "",
+    password: "",
+    name: "",
+    email: "",
+  });
 
   const handleChangeValue = (e, value) => {
-    switch(value){
-      case 'username':
-        return setUser({...user, 'username':e})
-      case 'password':
-        return setUser({...user, 'password':e})
-    }
-  }
-
-  const InputLogin = [
-    { id: 1, label: "Alias", name:'username', secureTextEntry: false },
-    { id: 2, label: "Password",name:'password', secureTextEntry: true },
-  ];
-
-  const InputRegister = [
-    { id: 4, label: "Email Address", secureTextEntry: false },
-    { id: 3, label: "Alias", secureTextEntry: false },
-  ];
-
-  const handleSubmit = async () => {
-    setLoading(true)
-    let res = await handleLogin(user)
-    if(res){
-      setLoading(!res)
-      setModalVisible(res)
+    switch (value) {
+      case "username":
+        return setUser({ ...user, username: e });
+      case "password":
+        return setUser({ ...user, password: e });
     }
   };
 
+  const handleChangeValueRegister = (e, value) => {
+    switch (value) {
+      case "username":
+        return setRegister({ ...register, username: e });
+      case "password":
+        return setRegister({ ...register, password: e });
+      case "email":
+        return setRegister({ ...register, email: e });
+      case "name":
+        return setRegister({ ...register, name: e });
+    }
+  };
 
+  const InputLogin = [
+    { id: 1, label: "Alias", name: "username", secureTextEntry: false },
+    { id: 2, label: "Password", name: "password", secureTextEntry: true },
+  ];
 
+  const InputRegister = [
+    { id: 4, label: "Email Address", name: "email", secureTextEntry: false },
+    { id: 3, label: "Alias", name: "username", secureTextEntry: false },
+    { id: 5, label: "Name", name: "name", secureTextEntry: false },
+    { id: 6, label: "Password", name: "password", secureTextEntry: true },
+  ];
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    let res = await handleLogin(user);
+    if (res) {
+      setLoading(!res);
+      setModalVisible(res);
+    }
+  };
+  
+  const handleSubmitRegister = async () => {
+    setLoading(true);
+    let res = await handleRegister(register);
+    if (res) {
+      setLoading(!res);
+      setModalVisible(res);
+    }
+  };
   return (
-    <KeyboardAwareScrollView style={form.container} behavior="height">
-      <IngredientesModal modalVisible={modalVisible} setModalVisible={setModalVisible} message="Error al logear el usuario" />
+    <KeyboardAwareScrollView behavior="height">
+      <IngredientesModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        message="Error al logear el usuario"
+      />
       <View className="container__form">
         <View className="header__form" style={[form.header, form.shadowProp]}>
           <Image
@@ -74,11 +103,19 @@ const Login = (props) => {
           </View>
         </View>
         {tabs === 1 ? (
-          (loading ?
-            <View style={{with:'100%',height:200, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+          loading ? (
+            <View
+              style={{
+                with: "100%",
+                height: 200,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <Feather name="loader" size={50} color="black" />
             </View>
-              :
+          ) : (
             <Form_SignIn
               inputs={InputLogin}
               navigation={props.navigation}
@@ -93,8 +130,8 @@ const Login = (props) => {
             inputs={InputRegister}
             navigation={props.navigation}
             button="Register"
-            handleChangeValue={handleChangeValue}
-            handleSubmit={handleSubmit}
+            handleChangeValue={handleChangeValueRegister}
+            handleSubmit={handleSubmitRegister}
             value={user}
           />
         )}

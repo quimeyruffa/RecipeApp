@@ -11,7 +11,7 @@ import axios from "axios";
 import { URL } from "../../../Context/type";
 
 const Ingredientes = (props) => {
-  const { create_recipe, token } = useContext(NotiContext);
+  const { create_recipe, token, Ingredientes, handleGetIngredientes } = useContext(NotiContext);
   const [cant, setCant] = useState(1);
   const [ingredientes, setIngredientes] = useState([]);
   const [ingrediente, setIngrediente] = useState("");
@@ -27,13 +27,18 @@ const Ingredientes = (props) => {
     }
   };
 
-  useEffect(() => {}, [ingredientes]);
+  useEffect(() => {handleGetIngredientes()}, [ingredientes]);
 
+  function handleFindIngrediente(item) {
+    return item.nombre === ingrediente;
+}
   const handleAddIngredient = async () => {
     // Control ingredinetes
     if (ingrediente === "") {
       console.log("bobo");
-    } else {
+    } else if(Ingredientes.find(handleFindIngrediente)){
+      handleCreateRecipe()
+    }else{
       await axios
       .post(`${URL}api/recetas/ingredientes/`, {"nombre":ingrediente}, {
         headers: { Authorization: `Bearer ${token}` },
@@ -73,20 +78,10 @@ const Ingredientes = (props) => {
     });
   }
 
-  const handleDeleteRecipe = async (id) => {
+  const handleDeleteRecipe =(nombre)=> {
+    console.log(nombre);
+    setIngredientes(ingredientes.filter(item => {item.ingrediente === nombre}))
     
-    
-    // await axios
-    // .delete(`${URL}api/recetas/utilizados/${id}`, {
-    //   headers: { Authorization: `Bearer ${token}` },
-    // })
-    // .then(async (resp) => {
-    //   console.log(resp.data);
-      
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    // });
   }
 
 
@@ -218,8 +213,8 @@ const Ingredientes = (props) => {
             >
               <Text>{item.ingrediente}</Text>
               <View style={{ display: "flex", flexDirection: "row" }}>
-                <MaterialIcons name="delete" size={24} color="black" />
-                <MaterialIcons name="edit" size={24} color="black" />
+                <MaterialIcons name="edit" size={30} color="#FA4A0C" />
+                <MaterialIcons name="delete" size={30} color="black" onPress={()=>handleDeleteRecipe(item.ingrediente)}/>
               </View>
             </View>
           );

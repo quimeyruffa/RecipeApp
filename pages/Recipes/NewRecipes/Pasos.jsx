@@ -11,7 +11,7 @@ import axios from "axios";
 import { URL } from "../../../Context/type";
 
 const Pasos = (props) => {
-  const { token, create_recipe } = useContext(NotiContext);
+  const { token, create_recipe, handleMyRecipes } = useContext(NotiContext);
   const { setStep, navigation } = props;
   const [paso, setPaso] = useState("");
   const [pasos, setPasos] = useState([]);
@@ -72,6 +72,11 @@ const Pasos = (props) => {
       console.log(error);
     });
   }
+
+  const handleDeletePaso =(nombre)=> {
+    setPasos(pasos.filter(item => {item.texto === nombre}))
+  }
+
   return (
       <>
     <View style={styles.card__Recipe}>
@@ -132,7 +137,8 @@ const Pasos = (props) => {
           </Pressable>
 
           <Pressable
-            onPress={() => {
+            onPress={async() => {
+              await handleMyRecipes()
               setStep(1)
               navigation.navigate("Recipes")}}
             style={styles.nextButton}
@@ -148,8 +154,8 @@ const Pasos = (props) => {
             >
               <Text>{item.texto}</Text>
               <View style={{ display: "flex", flexDirection: "row" }}>
-                <MaterialIcons name="delete" size={24} color="black" />
-                <MaterialIcons name="edit" size={24} color="black" />
+                <MaterialIcons name="edit" size={30} color="#FA4A0C" />
+                <MaterialIcons name="delete" size={30} color="black" onPress={()=> handleDeletePaso(item.texto)}/>
               </View>
             </View>
           );
