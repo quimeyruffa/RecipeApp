@@ -1,14 +1,14 @@
 
-
-import {  Provider as StoreProvider } from 'react-redux'
-import store from './src/redux/store'
+import NotiState from './Context/notifications/NotiState';
 import Aux from './pages/SubApp';
+import 'react-native-gesture-handler'
 function App() {
   
   return (
-    <StoreProvider store={store}>
+    <NotiState>
       <Aux />
-    </StoreProvider>
+    </NotiState>
+    
   );
 }
 

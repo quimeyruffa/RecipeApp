@@ -11,7 +11,11 @@ const DropDownSelect = (props) => {
 		data={props.data}
 		defaultButtonText={props.defaultText}
 		onSelect={(selectedItem, index) => {
-			console.log(selectedItem, index)
+			{props.setTipo ? 
+				props.setTipo(selectedItem)
+				:
+				props.setUnidad(index + 1)
+			}
 		}}
 		buttonTextAfterSelection={(selectedItem, index) => {
 			// text represented after item is selected\\\\\

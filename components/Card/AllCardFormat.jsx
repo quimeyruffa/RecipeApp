@@ -1,14 +1,23 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Text, View, StyleSheet, Image,Pressable } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
+import NotiContext from "../../Context/notifications/NotiContext";
 
-const AllCardFormat = () => {
+const AllCardFormat = (props) => {
+  const {handleDetailsRecipe} = useContext(NotiContext)
   const navigation = useNavigation(); 
   const [select, setSelect] = useState(false);
+  const {recipe} = props;
   const handleSelect = (value) => setSelect(value);
+
+  const handleShowDetails = async (index) => {
+    await handleDetailsRecipe(index)
+    navigation.navigate("DetailRecipe")
+  }
+
   return (
     <View style={styles.cardContainer}>
       <View style={[styles.card, styles.shadow]}>
@@ -27,11 +36,11 @@ const AllCardFormat = () => {
           />
         </View>
         <View style={styles.general}>
-          <Text style={styles.name}>Ensalada con salmón </Text>
+          <Text style={styles.name}>{recipe.nombre} </Text>
         </View>
         <View style={[styles.general, styles.row]}>
           <Feather name="user" size={24} color="#FA4A0C" />
-          <Text style={styles.cantPersonas}> 3 personas</Text>
+          <Text style={styles.cantPersonas}> {recipe.cantidadPersonas} {recipe.cantidadPersonas > 1 ? 'personas':'persona'}</Text>
         </View>
 
         <View style={[styles.general, styles.row]}>
@@ -50,13 +59,15 @@ const AllCardFormat = () => {
         </View>
 
         <View style={[styles.general, styles.row]}>
-          <Text style={styles.ingredientes}> Salmon</Text>
+          {recipe.utilizados.map((item, index) => (
+          <Text key={index} style={styles.ingredientes}> {item.ingrediente}</Text>
+          ))}
 
-          <Text style={styles.ingredientes}> Rucula</Text>
+          
         </View>
 
         <View style={[styles.general, styles.row]}>
-          <Pressable onPress={() => navigation.navigate("DetailRecipe")}>
+          <Pressable onPress={() => handleShowDetails(recipe.id)}>
             <Text style={styles.buttonMore}> see more</Text>
           </Pressable>
         </View>

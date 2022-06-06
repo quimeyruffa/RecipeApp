@@ -11,14 +11,14 @@ const styles = StyleSheet.create({
       backgroundColor: "#FF4B3A"
   },
   container: {
-      marginTop:30,
+
       justifyContent: "center",
-      padding:20,
+      padding:5,
       flexDirection: "column",
     },
     tinyLogo: {
       position: "relative",
-      top: 40,
+      top: 10,
       left: 30,
       width: 100,
       height: 100,
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize:50,
         color:'#ffff',
-        marginBottom:20
+        marginBottom:5
      
     },
     button: {

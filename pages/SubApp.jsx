@@ -4,19 +4,24 @@ import Tabs from "../components/BottomNavigation/Tab";
 import FirstPage from "./FirstPage/FirstPage";
 import Login from "./Login/Login";
 import HomePage from "./Menu/Menu";
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
+import NotiContext from "../Context/notifications/NotiContext";
 const Stack = createNativeStackNavigator();
-import { connect } from 'react-redux'
+import 'react-native-gesture-handler';
 
-function Aux(props) {
+function Aux() {
  
-  const { token } = props;
-  
+  const { token } = useContext(NotiContext);
   useEffect(()=>{},[token])
   
   return (
       <>
       {token ? (
+          <NavigationContainer>
+            <Tabs />
+          </NavigationContainer>
+      ) : (
+        <>
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen name="Home" component={FirstPage} />
@@ -25,11 +30,6 @@ function Aux(props) {
             <Stack.Screen name="Menu" component={HomePage} />
           </Stack.Navigator>
         </NavigationContainer>
-      ) : (
-        <>
-          <NavigationContainer>
-            <Tabs />
-          </NavigationContainer>
         
         </>
       )}
@@ -39,9 +39,5 @@ function Aux(props) {
   );
 }
 
-const mapStateToProps = (state) =>{
-  return {
-    token: state.token
-  }
-}
-export default connect(mapStateToProps)(Aux);
+
+export default Aux;

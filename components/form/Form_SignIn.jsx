@@ -1,13 +1,14 @@
 import React, {  } from "react";
-import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
+import { Pressable,Text, TextInput, View } from "react-native";
 import form from "../../styles/style.form";
 import styles from "../../styles/style.login";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const Form_SignIn = ({ inputs, button, handleSubmit,value, handleChangeValue,  }) => {
  
 
   return (
-    <ScrollView>
+    <KeyboardAwareScrollView  behavior="height">
       <View className="body__form" style={form.body}>
         <View
           className="container__formInput"
@@ -35,7 +36,7 @@ const Form_SignIn = ({ inputs, button, handleSubmit,value, handleChangeValue,  }
           
         </View>
       </View>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 
