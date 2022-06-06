@@ -7,11 +7,10 @@ import { useNavigation } from '@react-navigation/native';
 import NotiContext from "../../Context/notifications/NotiContext";
 
 const AllCardFormat = (props) => {
-  const {recipe} = props;
   const {handleDetailsRecipe} = useContext(NotiContext)
   const navigation = useNavigation(); 
   const [select, setSelect] = useState(false);
-
+  const {recipe} = props;
   const handleSelect = (value) => setSelect(value);
 
   const handleShowDetails = async (index) => {

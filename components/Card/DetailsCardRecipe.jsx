@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Text, View, StyleSheet, Image } from "react-native";
 import {
   FontAwesome,
@@ -10,25 +10,25 @@ import {
 } from "@expo/vector-icons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import NotiContext from "../../Context/notifications/NotiContext";
-
+import { useNavigation } from '@react-navigation/native';
 const DetailsCardRecipe = () => {
+  const navigation = useNavigation(); 
   const { details_recipe } = useContext(NotiContext);
   const [index, setIndex] = useState(0);
   const [select, setSelect] = useState(false);
   const [fav, setFav] = useState(false);
   const handleSelect = (value) => setSelect(value);
   const unidades = ["kg", "ml", "l", "g", "Taza"];
-  const data = [
-    { key: "300 gr tomates cherry" },
-    { key: "1 unidad de lechuga" },
-    { key: "1 unidad de filet de salmón" },
-  ];
+
 
   // if step == p (map dots) => orange
+  useEffect(() =>{console.log('console details', details_recipe)}, [details_recipe])
 
   return (
     <KeyboardAwareScrollView behavior="height">
+      {details_recipe &&
       <View style={[styles.container]}>
+        <AntDesign name="back" size={30} color="#FA4A0C" onPress={()=> {navigation.navigate("AllRecipes")}} style={{margin:15}}/>
         <View
           style={{
             display: "flex",
@@ -107,14 +107,14 @@ const DetailsCardRecipe = () => {
 
         <View style={[styles.generalSubTitle]}>
           <Text style={styles.subTitle}> Ingredientes </Text>
-          {details_recipe?.utilizados.map((ingrediente, index) => (
+          {details_recipe?.utilizados?.map((ingrediente, index) => (
             <Text key={index} style={styles.subTitleDes}>
               {ingrediente?.ingrediente} {ingrediente?.cantidad} {unidades[ingrediente?.unidad - 1]}
             </Text>
           ))}
         </View>
 
-      {details_recipe?.pasos && 
+      {details_recipe?.pasos !== [] && 
         <View style={[styles.generalSubTitle]}>
           <Text style={styles.subTitle}> Pasos </Text>
           <View>
@@ -127,7 +127,7 @@ const DetailsCardRecipe = () => {
                 padding: 5,
               }}
             >
-              <Text style={styles.subTitleDes}>{index + 1}. {details_recipe?.pasos[index].texto}</Text>
+              <Text style={styles.subTitleDes}>{index + 1}. {details_recipe?.pasos[index]?.texto}</Text>
               <View
                 style={{
                   display: "flex",
@@ -154,7 +154,7 @@ const DetailsCardRecipe = () => {
                   marginTop: 10,
                 }}
               >
-                {details_recipe?.pasos.map((item, i) =>{
+                {details_recipe?.pasos?.map((item, i) =>{
                   return (
                     <Entypo key={i} name="dot-single" size={40} color={index === i ? "#FA4A0C" : "#747272"} />
                   )
@@ -165,6 +165,7 @@ const DetailsCardRecipe = () => {
         </View>
 }
       </View>
+      }
     </KeyboardAwareScrollView>
   );
 };

@@ -12,7 +12,7 @@ const NotiState = (props) => {
     my_recipes:[],
     unidades:[],
     create_recipe:'',
-    details_recipe:undefined,
+    details_recipe:[],
     Ingredientes:[]
   };
 
@@ -38,7 +38,7 @@ const NotiState = (props) => {
     await axios
       .post("https://adapicooking.herokuapp.com/api/users/register/", user)
       .then((resp) => {
-        console.log(resp)
+
         dispatch({ type: 'USERNAME', payload:resp.data.username })
         dispatch({ type: 'TOKEN', payload: resp.data.token })
         
@@ -99,9 +99,10 @@ const NotiState = (props) => {
   }
   
   const handleDetailsRecipe =async (index) =>{
+    console.log(index)
     await axios.get(`${URL}api/recetas/${index}`, { headers: {"Authorization" : `Bearer ${state.token}`} })
     .then(resp => {
-      console.log(resp.data)
+      console.log('respuesta', resp.data)
     dispatch({ type: 'DETAILS_RECIPE', payload: resp.data })
   })
   .catch(error => {

@@ -104,7 +104,7 @@ const Receta = (props) => {
             >
               {img ? (
                 <Image
-                  style={{ height: 200, width: 200, borderRadius: 200 }}
+                  style={{ height: 100, width: 100, borderRadius: 200 }}
                   source={{ uri: img }}
                 />
               ) : null}
