@@ -2,7 +2,7 @@ import { useReducer } from "react";
 import NotiReducer from "./NotiReducer";
 import NotiContext from "./NotiContext";
 import axios from "axios";
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { URL } from "../type";
 const NotiState = (props) => {
   const initialState = {
@@ -13,11 +13,31 @@ const NotiState = (props) => {
     unidades:[],
     create_recipe:'',
     details_recipe:[],
-    Ingredientes:[]
+    Ingredientes:[],
+    descargas:[],
+    favoritos:[],
   };
 
   const [state, dispatch] = useReducer(NotiReducer, initialState);
+  
+  const handleAsyncStorage = async (value) => {
+    try{
+      await AsyncStorage.setItem('recetasDescargadas', 'value' )
+    }catch(err){
+      console.log(err)
+    }
+  }
 
+  const handleGetAsyncStorage = async () => {
+    try{
+      const value = await AsyncStorage.getItem('@storage_Key')
+      if(value !== null){
+
+      }
+    }catch (err) {
+      console.log(err)
+    }
+  }
 
   const handleMyRecipes = async () => {
     console.log('token', state.token)
