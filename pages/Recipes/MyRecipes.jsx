@@ -14,7 +14,7 @@ const MyRecipes = () => {
 
   useEffect(()=>{handleMyRecipes()},[])
 
-  useEffect(()=>{console.log(my_recipes)},[my_recipes])
+  useEffect(()=>{},[my_recipes])
 
   const handleDeleteRecipe = async (index) => {
     console.log(index)

@@ -6,18 +6,31 @@ import homePage from "../../styles/style.menu";
 import ScrollMenu from "../../components/ScrollMenu/ScrollMenu";
 import PNG from "../../assets/img/IngredientesButton.png";
 import NotiContext from "../../Context/notifications/NotiContext";
+import NetInfo from "@react-native-community/netinfo";
+
 const HomePage = (props) => {
   const { navigation } = props;
   const [search, setSearch] = useState("Search");
 
   const [modalVisible, setModalVisible] = useState(false);
-  const { handleGetRecipes } = useContext(NotiContext);
+  const { handleGetRecipes, handleConnectiontype } = useContext(NotiContext);
 
   useEffect(() => {
     handleGetRecipes();
   }, []);
 
-  
+  useEffect(() => {
+    networkConnection();
+  }, []);
+
+  const networkConnection = async () => {
+    await NetInfo.fetch().then((state) => {
+      // Guardar Type dentro de un estado global
+      handleConnectiontype(state.type);
+      console.log("Connection type", state.type);
+      console.log("Is connected?", state.isConnected);
+    });
+  };
 
   return (
    

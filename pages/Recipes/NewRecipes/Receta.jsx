@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Text, View, Image, Pressable } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect} from "react";
 import AddImg from "../../../assets/img/addImage.png";
 import TextCard from "../../../components/Input/TextCard";
 import { AntDesign } from "@expo/vector-icons";
@@ -19,8 +19,9 @@ const Receta = (props) => {
   const [save, setSave] = useState(false);
   const [tipo, setTipo] = useState("");
   const [continuar, setContinuar] = useState(false);
-  const { token, handleCreateRecipe, handleGetRecipes } = useContext(NotiContext);
-
+  const { token, handleCreateRecipe, handleGetRecipes } =
+    useContext(NotiContext);
+  const { saveData, setRecipeCellular, recipeCellular } = props;
   const unidades = [
     "Ensalada",
     "Carne",
@@ -31,6 +32,9 @@ const Receta = (props) => {
     "Pizza",
     "Pollo",
   ];
+
+  
+
   const PickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaType: ImagePicker.MediaTypeOptions.All,
@@ -66,7 +70,6 @@ const Receta = (props) => {
   };
 
   const handleSubmitRecipe = async () => {
-    console.log(img)
     let array = {
       nombre: text,
       descripcion: des,
@@ -75,23 +78,32 @@ const Receta = (props) => {
       cantidadPersonas: cantPorciones,
       tipo: null,
     };
-    console.log(array);
-    await axios
-      .post(`${URL}api/recetas/`, array, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(async (resp) => {
-        console.log(resp.data);
-
+    if (saveData) {
+      
+        console.log(recipeCellular)
         setContinuar(true);
-        await handleCreateRecipe(resp.data);
-        await handleGetRecipes()
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        setRecipeCellular([...recipeCellular, array]);
+    }else{  
+      sendData(array);
+    }
   };
 
+  const sendData = async(array) => {
+    await axios
+          .post(`${URL}api/recetas/`, array, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+          .then(async (resp) => {
+           
+
+            setContinuar(true);
+            await handleCreateRecipe(resp.data);
+            await handleGetRecipes();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+  }
   return (
     <>
       <View style={styles.card__Recipe}>
@@ -260,8 +272,6 @@ const Receta = (props) => {
       </View>
       {continuar ? (
         <View style={styles.rowIngredientes}>
-         
-
           <Pressable
             onPress={() => props.setStep(props.step + 1)}
             style={styles.nextButton}

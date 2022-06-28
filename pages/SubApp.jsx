@@ -8,16 +8,14 @@ import { useContext, useEffect } from "react";
 import NotiContext from "../Context/notifications/NotiContext";
 const Stack = createNativeStackNavigator();
 import "react-native-gesture-handler";
-import NetInfo from "@react-native-community/netinfo";
 function Aux() {
-  const { token } = useContext(NotiContext);
+  const { token, handleConnectiontype } = useContext(NotiContext);
+
   useEffect(() => {
-    NetInfo.fetch().then((state) => {
-      // Guardar Type dentro de un estado global
-      console.log("Connection type", state.type);
-      console.log("Is connected?", state.isConnected);
-    });
+    
   }, [token]);
+
+  
 
   return (
     <>

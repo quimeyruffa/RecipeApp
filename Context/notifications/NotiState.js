@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { URL } from "../type";
 const NotiState = (props) => {
   const initialState = {
+    connection_type:'wifi',
     token: false,
     username:'',
     recipes:[],
@@ -20,9 +21,14 @@ const NotiState = (props) => {
 
   const [state, dispatch] = useReducer(NotiReducer, initialState);
   
+  const handleConnectiontype = async (value) =>{
+    console.log('VALUE', value)
+    dispatch({ type: 'CONNECTION', payload: value})
+  }
   const handleAsyncStorage = async (value) => {
     try{
-      await AsyncStorage.setItem('recetasDescargadas', 'value' )
+      console.log(JSON.stringify(value))
+      await AsyncStorage.setItem('recetasDescargadas', JSON.stringify(value) )
     }catch(err){
       console.log(err)
     }
@@ -40,7 +46,7 @@ const NotiState = (props) => {
   }
 
   const handleMyRecipes = async () => {
-    console.log('token', state.token)
+    
     await axios
     .get(`${URL}api/recetas/?user=${state.username}`, { headers: {"Authorization" : `Bearer ${state.token}`} })
     .then((resp) => {
@@ -109,7 +115,7 @@ const NotiState = (props) => {
   const getUnidades = async () => {
     await axios.get(`${URL}api/recetas/unidades/`, { headers: {"Authorization" : `Bearer ${state.token}`} })
     .then(resp => {
-      console.log('unidades',resp.data)
+      
       dispatch({ type: 'UNIDADES', payload: resp.data })
 
     })
@@ -119,10 +125,10 @@ const NotiState = (props) => {
   }
   
   const handleDetailsRecipe =async (index) =>{
-    console.log(index)
+   
     await axios.get(`${URL}api/recetas/${index}`, { headers: {"Authorization" : `Bearer ${state.token}`} })
     .then(resp => {
-      console.log('respuesta', resp.data)
+     
     dispatch({ type: 'DETAILS_RECIPE', payload: resp.data })
   })
   .catch(error => {
@@ -136,7 +142,7 @@ const NotiState = (props) => {
 
     await axios.get(`${URL}api/recetas/ingredientes/`, { headers: {"Authorization" : `Bearer ${state.token}`} })
     .then(resp => {
-      console.log(resp.data)
+      
       dispatch({ type: 'INGREDIENTES', payload: resp.data })
 
     })
@@ -155,6 +161,7 @@ const NotiState = (props) => {
         my_recipes:state.my_recipes,
         details_recipe:state.details_recipe,
         Ingredientes:state.Ingredientes,
+        connection_type:state.connection_type,
         handleLogin,
         handleGetRecipes,
         getUnidades,
@@ -162,7 +169,9 @@ const NotiState = (props) => {
         handleMyRecipes,
         handleDetailsRecipe,
         handleGetIngredientes,
-        handleRegister
+        handleRegister,
+        handleConnectiontype,
+        handleAsyncStorage
       }}
     >
       {props.children}

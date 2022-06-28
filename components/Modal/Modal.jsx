@@ -2,9 +2,14 @@ import React, { useState } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
 
 const IngredientesModal = (props) => {
-  const {modalVisible, setModalVisible, message} = props;
+  const {
+    modalVisible,
+    setModalVisible,
+    message,
+    button_function = null,
+  } = props;
   return (
-    <View >
+    <View>
       <Modal
         animationType="slide"
         transparent={true}
@@ -17,12 +22,35 @@ const IngredientesModal = (props) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>{message}</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyle}>Close</Text>
-            </Pressable>
+            {button_function !== null ? (
+              <View>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => { 
+                  
+                   
+                    setModalVisible(!modalVisible)}}
+                >
+                  <Text style={styles.textStyle}>Continuar</Text>
+                </Pressable>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => { 
+                  
+                    button_function(true)
+                    setModalVisible(!modalVisible)}}
+                >
+                  <Text style={styles.textStyle}>Subir la recera cuando este conectado a una red gratuita</Text>
+                </Pressable>
+              </View>
+            ) : (
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyle}>Cerrar</Text>
+              </Pressable>
+            )}
           </View>
         </View>
       </Modal>
@@ -46,16 +74,16 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
   },
   button: {
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
   },
   buttonOpen: {
     backgroundColor: "#F194FF",
@@ -66,12 +94,12 @@ const styles = StyleSheet.create({
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });
 
 export default IngredientesModal;

@@ -11,13 +11,13 @@ import axios from "axios";
 import { URL } from "../../../Context/type";
 
 const Ingredientes = (props) => {
-  const { create_recipe, token, Ingredientes, handleGetIngredientes } = useContext(NotiContext);
+  const { create_recipe, token, Ingredientes, handleGetIngredientes } =
+    useContext(NotiContext);
   const [cant, setCant] = useState(1);
   const [ingredientes, setIngredientes] = useState([]);
   const [ingrediente, setIngrediente] = useState("");
   const [unidad, setUnidad] = useState(1);
-  const [continuar, setContinuar] = useState(false);
-
+  const { saveData, setRecipeCellular, recipeCellular } = props;
   const unidades = ["kg", "ml", "l", "g", "Taza"];
   const restCant = () => {
     if (cant == 1) {
@@ -27,31 +27,34 @@ const Ingredientes = (props) => {
     }
   };
 
-  useEffect(() => {handleGetIngredientes()}, [ingredientes]);
+  useEffect(() => {
+    handleGetIngredientes();
+  }, [ingredientes]);
 
   function handleFindIngrediente(item) {
     return item.nombre === ingrediente;
-}
+  }
   const handleAddIngredient = async () => {
     // Control ingredinetes
     if (ingrediente === "") {
-      console.log("bobo");
-    } else if(Ingredientes.find(handleFindIngrediente)){
-      handleCreateRecipe()
-    }else{
+      console.log("array");
+    } else if (Ingredientes.find(handleFindIngrediente)) {
+      handleCreateRecipe();
+    } else {
       await axios
-      .post(`${URL}api/recetas/ingredientes/`, {"nombre":ingrediente}, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(async (resp) => {
-        console.log(resp.data);
-        handleCreateRecipe()
-      })
-      .catch((error) => {
-        
-
-        console.log(error);
-      });
+        .post(
+          `${URL}api/recetas/ingredientes/`,
+          { nombre: ingrediente },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
+        .then(() => {
+          handleCreateRecipe();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
@@ -63,27 +66,34 @@ const Ingredientes = (props) => {
       ingrediente: ingrediente,
       unidad: unidad,
     };
-    console.log(array)
+   
     setIngredientes([...ingredientes, array]);
-    await axios
-    .post(`${URL}api/recetas/utilizados/`, array, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then(async (resp) => {
-      console.log(resp.data);
-      
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
 
-  const handleDeleteRecipe =(nombre)=> {
-    console.log(nombre);
-    setIngredientes(ingredientes.filter(item => {item.ingrediente === nombre}))
-    
-  }
+    if (saveData) {
+        console.log('save', saveData)
+        console.log(recipeCellular);
+        setRecipeCellular([...recipeCellular, array]);
+    }else{
+        await axios
+          .post(`${URL}api/recetas/utilizados/`, array, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+          .then(async (resp) => {
+            console.log('Dta',resp.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    }
+  };
 
+  const handleDeleteRecipe = (nombre) => {
+    setIngredientes(
+      ingredientes.filter((item) => {
+        item.ingrediente === nombre;
+      })
+    );
+  };
 
   return (
     <>
@@ -186,24 +196,23 @@ const Ingredientes = (props) => {
           </View>
         </View>
       </View>
-     
-        <View style={[{marginBottom:5},styles.rowIngredientes]}>
-          <Pressable
-            onPress={() => props.setStep(props.step - 1)}
-            style={styles.nextButton}
-          >
-            <Text style={{ color: "white", fontSize: 20 }}>Atras</Text>
-          </Pressable>
 
-          <Pressable
-            onPress={() => props.setStep(props.step + 1)}
-            style={styles.nextButton}
-          >
-            <Text style={{ color: "white", fontSize: 20 }}>Siguiente</Text>
-          </Pressable>
-        </View>
+      <View style={[{ marginBottom: 5 }, styles.rowIngredientes]}>
+        <Pressable
+          onPress={() => props.setStep(props.step - 1)}
+          style={styles.nextButton}
+        >
+          <Text style={{ color: "white", fontSize: 20 }}>Atras</Text>
+        </Pressable>
 
-   
+        <Pressable
+          onPress={() => props.setStep(props.step + 1)}
+          style={styles.nextButton}
+        >
+          <Text style={{ color: "white", fontSize: 20 }}>Siguiente</Text>
+        </Pressable>
+      </View>
+
       {ingredientes &&
         ingredientes.map((item, index) => {
           return (
@@ -214,7 +223,12 @@ const Ingredientes = (props) => {
               <Text>{item.ingrediente}</Text>
               <View style={{ display: "flex", flexDirection: "row" }}>
                 <MaterialIcons name="edit" size={30} color="#FA4A0C" />
-                <MaterialIcons name="delete" size={30} color="black" onPress={()=>handleDeleteRecipe(item.ingrediente)}/>
+                <MaterialIcons
+                  name="delete"
+                  size={30}
+                  color="black"
+                  onPress={() => handleDeleteRecipe(item.ingrediente)}
+                />
               </View>
             </View>
           );
