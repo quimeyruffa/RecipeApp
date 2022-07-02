@@ -19,7 +19,7 @@ const homePage = StyleSheet.create({
     paddingLeft: 10,
   },
   input: {
-    width: "100%",
+    width: "40%",
     backgroundColor: "transparent",
     display: "flex",
     paddingLeft: 10,
@@ -58,6 +58,7 @@ const homePage = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    padding:5
   },
 });
 

@@ -17,9 +17,9 @@ const Receta = (props) => {
   const [des, setDes] = useState("");
   const [img, setPic] = useState(null);
   const [save, setSave] = useState(false);
-  const [tipo, setTipo] = useState("");
+  const [tipos, setTipo] = useState("Ensalada");
   const [continuar, setContinuar] = useState(false);
-  const { token, handleCreateRecipe, handleGetRecipes } =
+  const { token, handleCreateRecipe, handleGetRecipes, handleUpload } =
     useContext(NotiContext);
   const { saveData, setRecipeCellular, recipeCellular } = props;
   const unidades = [
@@ -44,7 +44,10 @@ const Receta = (props) => {
     });
 
     if (!result.cancelled) {
-      setPic(result.uri);
+  
+      
+      let newFile = {uri:result.uri, type:`test/${result.uri.split(".")[1]}`, name:`test.${result.uri.split(".")[1]}`}
+      handleUpload(newFile, setPic);
     }
   };
   const restCantPorciones = () => {
@@ -70,13 +73,15 @@ const Receta = (props) => {
   };
 
   const handleSubmitRecipe = async () => {
+    console.log(tipos)
+   
     let array = {
       nombre: text,
       descripcion: des,
       imagen: img,
       porciones: cantPorciones,
       cantidadPersonas: cantPorciones,
-      tipo: null,
+      tipo:null,
     };
     if (saveData) {
       
@@ -89,6 +94,7 @@ const Receta = (props) => {
   };
 
   const sendData = async(array) => {
+    console.log(array)
     await axios
           .post(`${URL}api/recetas/`, array, {
             headers: { Authorization: `Bearer ${token}` },

@@ -13,9 +13,9 @@ import ListItem from "./ListItem";
 
 const ScrollMenu = (props) => {
   const [press, setPress] = useState("");
-  const { recipes } = useContext(NotiContext);
+  const { display_recipes } = useContext(NotiContext);
 
-  useEffect(() => {}, [recipes]);
+  useEffect(() => {}, [display_recipes]);
 
   const handlePress = (value) => setPress(value);
   return (
@@ -55,7 +55,7 @@ const ScrollMenu = (props) => {
           />
         </SafeAreaView>
       ) : (
-        <Card recipes={recipes} />
+        <Card recipes={display_recipes} />
       )}
     </View>
   );

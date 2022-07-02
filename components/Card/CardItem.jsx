@@ -21,10 +21,14 @@ const CardItem = (props) => {
           />
         </View>
         <View style={styles.general}>
+          {item?.imagen ?
           <Image
             style={styles.img}
-            source={Img}
-          />
+            source={{uri: item?.imagen}}
+          /> 
+             :
+             <Text></Text> 
+        }
         </View>
         <View style={styles.general}>
           <Text style={styles.name}>{item?.nombre} </Text>

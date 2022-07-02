@@ -34,8 +34,8 @@ const SECTIONS = [
 const numColumns = 2;
 // const width = Dimensions.get('window').width
 const AllRecipes = () => {
-  const { recipes, handleGetRecipes } = useContext(NotiContext);
-  useEffect(()=>{handleGetRecipes(),[]})
+  const { recipes } = useContext(NotiContext);
+ 
   useEffect(() => {}, [recipes]);
   const _renderItem = (e) => {
     return(<AllCardFormat recipe={ e.item} />)

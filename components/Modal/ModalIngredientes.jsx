@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
+import NotiContext from "../../Context/notifications/NotiContext";
+import Item from "./Item";
 
 const IngredientesModal = (props) => {
-  const {
-    modalVisible,
-    setModalVisible,
-    message,
-    button_function = null,
-  } = props;
+  const { modalVisible, setModalVisible } = props;
+
+  const { Ingredientes } = useContext(NotiContext);
+  
+
+  useEffect(() => {
+    console.log(Ingredientes);
+  }, []);
   return (
     <View>
       <Modal
@@ -15,38 +19,23 @@ const IngredientesModal = (props) => {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
           setModalVisible(!modalVisible);
         }}
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>{message}</Text>
-            {button_function !== null ? (
-              <View>
-                <Pressable
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => {  setModalVisible(!modalVisible)}}>
-                  <Text style={styles.textStyle}>Continuar</Text>
-                </Pressable>
-                <Pressable
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => { 
-                  
-                    button_function(true)
-                    setModalVisible(!modalVisible)}}
-                >
-                  <Text style={styles.textStyle}>Subir la recera cuando este conectado a una red gratuita</Text>
-                </Pressable>
-              </View>
-            ) : (
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text style={styles.textStyle}>Cerrar</Text>
-              </Pressable>
-            )}
+            <View style={styles.modalText}>
+              <Text>Ingredientes</Text>
+              {Ingredientes?.map((item, index) => (
+                <Item item={item} index={index} key={index}/>
+              ))}
+            </View>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text style={styles.textStyle}>Cerrar</Text>
+            </Pressable>
           </View>
         </View>
       </Modal>

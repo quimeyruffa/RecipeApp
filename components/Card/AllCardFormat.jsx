@@ -30,10 +30,13 @@ const AllCardFormat = (props) => {
           />
         </View>
         <View style={styles.general}>
+          {recipe.imagen ?  
           <Image
             style={styles.img}
-            source={require("../../assets/img/comida.png")}
-          />
+            source={{uri: recipe.imagen}}
+          /> 
+          : <Text></Text>
+          }
         </View>
         <View style={styles.general}>
           <Text style={styles.name}>{recipe.nombre} </Text>

@@ -6,7 +6,7 @@ import Swipeable from "react-native-gesture-handler/Swipeable";
 import { MaterialIcons } from "@expo/vector-icons";
 
 const Item = (props) => {
-  const { data, index, handleDeleteRecipe } = props;
+  const { data, handleEditRecipe, handleDeleteRecipe } = props;
   
   const leftSwipe = () => {
     return (
@@ -16,6 +16,7 @@ const Item = (props) => {
     );
   };
 
+
   
 
   return (
@@ -23,10 +24,14 @@ const Item = (props) => {
       <View
         style={[{ display: "flex", flexDirection: "row" }, styles.card__Recipe]}
       >
+        {data.imagen &&
         <Image
-          style={{ height: 65, width: 65, borderRadius: 60 }}
-          source={Img}
+        style={{ height: 65, width: 65, borderRadius: 60 }}
+        source={{uri: data.imagen}}
         />
+      }
+       
+        
         <View
           style={{
             display: "flex",
@@ -52,11 +57,11 @@ const Item = (props) => {
             alignItems: "center",
           }}
         >
-          <MaterialIcons name="edit" size={30} color="#FA4A0C" />
+          {/* <MaterialIcons name="edit" size={30} color="#FA4A0C" onPress={() => handleEditRecipe(data)}/> */}
           <MaterialIcons
             name="delete"
             size={30}
-            color="black"
+            color="red"
             onPress={() => handleDeleteRecipe(data.id)}
           />
         </View>

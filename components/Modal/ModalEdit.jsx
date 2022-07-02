@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
 
-const IngredientesModal = (props) => {
+const IngredientesModalEdit = (props, children) => {
   const {
     modalVisible,
     setModalVisible,
-    message,
-    button_function = null,
   } = props;
   return (
     <View>
@@ -15,38 +13,19 @@ const IngredientesModal = (props) => {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
           setModalVisible(!modalVisible);
         }}
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>{message}</Text>
-            {button_function !== null ? (
-              <View>
-                <Pressable
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => {  setModalVisible(!modalVisible)}}>
-                  <Text style={styles.textStyle}>Continuar</Text>
-                </Pressable>
-                <Pressable
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => { 
-                  
-                    button_function(true)
-                    setModalVisible(!modalVisible)}}
-                >
-                  <Text style={styles.textStyle}>Subir la recera cuando este conectado a una red gratuita</Text>
-                </Pressable>
-              </View>
-            ) : (
+            <View style={styles.modalText}></View>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => setModalVisible(!modalVisible)}
               >
                 <Text style={styles.textStyle}>Cerrar</Text>
               </Pressable>
-            )}
+            
           </View>
         </View>
       </Modal>
@@ -98,4 +77,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default IngredientesModal;
+export default IngredientesModalEdit;

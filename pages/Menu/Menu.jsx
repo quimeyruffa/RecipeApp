@@ -1,5 +1,12 @@
-import IngredientesModal from "../../components/Modal/Modal";
-import { Text, View, Image, TextInput, Pressable, ScrollView } from "react-native";
+import IngredientesModal from "../../components/Modal/ModalIngredientes";
+import {
+  Text,
+  View,
+  Image,
+  TextInput,
+  Pressable,
+  ScrollView,
+} from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { Entypo, FontAwesome } from "@expo/vector-icons";
 import homePage from "../../styles/style.menu";
@@ -10,13 +17,22 @@ import NetInfo from "@react-native-community/netinfo";
 
 const HomePage = (props) => {
   const { navigation } = props;
-  const [search, setSearch] = useState("Search");
-
+  const [search, setSearch] = useState('');
+  const [user, setUser] = useState('');
+  const [ingrediente, setIngrediente] = useState('');
+  const [noIngredient, setNoIngredient] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-  const { handleGetRecipes, handleConnectiontype } = useContext(NotiContext);
+  const {
+    handleGetRecipes,
+    handleGetIngredientes,
+    handleConnectiontype,
+    handleGetAsyncStorage,
+    handleFilterRecipe,
+  } = useContext(NotiContext);
 
   useEffect(() => {
     handleGetRecipes();
+    handleGetIngredientes();
   }, []);
 
   useEffect(() => {
@@ -27,22 +43,22 @@ const HomePage = (props) => {
     await NetInfo.fetch().then((state) => {
       // Guardar Type dentro de un estado global
       handleConnectiontype(state.type);
+      if (state.type === "wifi") {
+        handleGetAsyncStorage();
+      }
       console.log("Connection type", state.type);
       console.log("Is connected?", state.isConnected);
     });
   };
 
+  const handleSearch = async () => {
+    await handleFilterRecipe(search, user, ingrediente, noIngredient);
+    navigation.navigate("AllRecipes");
+  };
   return (
-   
-
     <View style={homePage.container}>
       <View style={homePage.buttonContainer}>
-        <Entypo
-          name="menu"
-          size={40}
-          color="black"
-          style={{ paddingTop: 5, paddingLeft: 15 }}
-        />
+       
         <Pressable
           onPress={() => setModalVisible(!modalVisible)}
           style={{
@@ -61,15 +77,22 @@ const HomePage = (props) => {
           setModalVisible={setModalVisible}
         />
       )}
-      <View>
+      <View style={{ display: "flex", flexDirection: "row", width: "100%" }}>
         <View style={homePage.inputContainer}>
-          <FontAwesome name="search" size={24} color="black" />
           <TextInput
             style={homePage.input}
             onChangeText={setSearch}
-            value={search}
+            value={search !== null ? search : "Recipe"}
           />
         </View>
+        <View style={homePage.inputContainer}>
+          <TextInput
+            style={homePage.input}
+            onChangeText={setUser}
+            value={user !== null ? user : "User"}
+          />
+        </View>
+        <FontAwesome name="search" size={30} color="black" onPress={handleSearch}/>
       </View>
 
       <ScrollMenu status="list" state={1} />
@@ -79,22 +102,24 @@ const HomePage = (props) => {
           justifyContent: "center",
           display: "flex",
           alignItems: "flex-end",
-          
         }}
       >
         <Pressable onPress={() => navigation.navigate("AllRecipes")}>
-          <Text style={{ color: "#FA4A0C", fontSize: 18, fontWeight: "bold", padding:5 }}>
+          <Text
+            style={{
+              color: "#FA4A0C",
+              fontSize: 18,
+              fontWeight: "bold",
+              padding: 5,
+            }}
+          >
             Ver mas
           </Text>
         </Pressable>
       </View>
       <ScrollMenu status="list" state={2} />
     </View>
-
   );
 };
-
-
-
 
 export default HomePage;

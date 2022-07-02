@@ -1,16 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Text, View, StyleSheet, Image } from "react-native";
+import { Text, View, StyleSheet, Image, SafeAreaView } from "react-native";
 import {
   FontAwesome,
   Feather,
   AntDesign,
-  Ionicons,
-  MaterialIcons,
-  Entypo,
 } from "@expo/vector-icons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import NotiContext from "../../Context/notifications/NotiContext";
 import { useNavigation } from '@react-navigation/native';
+import CarouselCards from "../Carousel/Carousel";
+
 const DetailsCardRecipe = () => {
   const navigation = useNavigation(); 
   const { details_recipe } = useContext(NotiContext);
@@ -76,10 +75,14 @@ const DetailsCardRecipe = () => {
         </View>
 
         <View style={[styles.general]}>
+          {details_recipe?.imagen ? 
           <Image
             style={[styles.img]}
-            source={require("../../assets/img/comida.png")}
+            source={{uri: details_recipe?.imagen}}
           />
+          : 
+          <Text></Text>
+          }
         </View>
 
         <View style={[styles.general, styles.row]}>
@@ -114,54 +117,12 @@ const DetailsCardRecipe = () => {
           ))}
         </View>
 
-      {details_recipe?.pasos !== [] && 
+      {details_recipe?.pasos.lenght !== 0 && 
         <View style={[styles.generalSubTitle]}>
           <Text style={styles.subTitle}> Pasos </Text>
-          <View>
-            {/* Pasos */}
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                backgroundColor: "#c4c4c48f",
-                padding: 5,
-              }}
-            >
-              <Text style={styles.subTitleDes}>{index + 1}. {details_recipe?.pasos[index]?.texto}</Text>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginTop: 10,
-                }}
-              >
-               {index !== 0 ? <Ionicons name="chevron-back" size={35} color="#747272" onPress={() =>  setIndex(index - 1)}/> : <Ionicons name="chevron-back" size={35} color="#F2F2F2" />}
-                <Image
-                  style={[styles.imgStep]}
-                  source={require("../../assets/img/plato.png")}
-                />
-               {index +1 !== details_recipe?.pasos.length ? <MaterialIcons name="navigate-next" size={35} color="#747272" onPress={() =>  setIndex(index + 1)}/> : <MaterialIcons name="navigate-next" size={35} color="#F2F2F2" /> }
-              </View>
-
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: 10,
-                }}
-              >
-                {details_recipe?.pasos?.map((item, i) =>{
-                  return (
-                    <Entypo key={i} name="dot-single" size={40} color={index === i ? "#FA4A0C" : "#747272"} />
-                  )
-                })}
-              </View>
-            </View>
-          </View>
+          <SafeAreaView style={styles.containerImageCarrousel}>
+          <CarouselCards data={details_recipe.pasos} />
+          </SafeAreaView>
         </View>
 }
       </View>
@@ -177,6 +138,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginBottom: 100,
   },
+
   shadow: {
     shadowColor: "gray",
     shadowOffset: {
@@ -202,6 +164,7 @@ const styles = StyleSheet.create({
     width: "100%",
     marginBottom: 30,
   },
+  
   row: {
     marginTop: 20,
     flexDirection: "row",
@@ -269,5 +232,12 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     fontSize: 25,
     fontStyle: "italic",
+  },
+  containerImageCarrousel: {
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+    height:500
   },
 });

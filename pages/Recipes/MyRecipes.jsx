@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {  Text, View, StyleSheet, FlatList} from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useContext } from "react";
@@ -7,10 +7,11 @@ import styles from "../../styles/style.recipe";
 import Item from "../../components/Card/Item";
 import axios from "axios";
 import { URL } from "../../Context/type";
+import IngredientesModalEdit from "../../components/Modal/ModalEdit";
 
 const MyRecipes = () => {
   const {handleMyRecipes, my_recipes, token} = useContext(NotiContext);
-  
+  const [openModalEdit, setOpenModalEdit] = useState(false);
 
   useEffect(()=>{handleMyRecipes()},[])
 
@@ -29,9 +30,14 @@ const MyRecipes = () => {
       console.log(error);
     });
 };
+
+const handleEditRecipe = (item) =>{
+  console.log('Item', item)
+  setOpenModalEdit(true)
+}
   return (
     <View style={{flex:1}}>
-    
+    <IngredientesModalEdit modalVisible={openModalEdit}  setModalVisible={setOpenModalEdit} />
     {!(my_recipes === []) ?
       <View style={styles.container}>
         <Text style={{fontSize:20, marginBottom:10}}>Mis Recetas</Text>
@@ -39,7 +45,7 @@ const MyRecipes = () => {
           data={my_recipes}
           renderItem={({item}) =>{
             
-            return <Item data={item} handleDeleteRecipe={handleDeleteRecipe}/>
+            return <Item data={item} handleDeleteRecipe={handleDeleteRecipe} handleEditRecipe={handleEditRecipe}/>
           }}
           ItemSeparatorComponent={()=>{
             return <View style={{marginBottom:5}}></View>

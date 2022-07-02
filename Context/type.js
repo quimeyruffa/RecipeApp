@@ -8,3 +8,4 @@ export const MY_RECIPES= 'MY_RECIPES';
 export const DETAILS_RECIPE = 'DETAILS_RECIPE';
 export const INGREDIENTES = 'INGREDIENTES';
 export const CONNECTION = 'CONNECTION';
+export const DISPLAY_RECIPES = 'DISPLAY_RECIPES';

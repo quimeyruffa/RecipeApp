@@ -70,8 +70,6 @@ const Ingredientes = (props) => {
     setIngredientes([...ingredientes, array]);
 
     if (saveData) {
-        console.log('save', saveData)
-        console.log(recipeCellular);
         setRecipeCellular([...recipeCellular, array]);
     }else{
         await axios

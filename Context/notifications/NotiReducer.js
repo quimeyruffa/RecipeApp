@@ -1,4 +1,4 @@
-import { TOKEN, RECIPES, UNIDADES, CREATE_RECIPE, USERNAME, MY_RECIPES, DETAILS_RECIPE, INGREDIENTES, CONNECTION } from "../type";
+import { TOKEN, RECIPES, UNIDADES, CREATE_RECIPE, USERNAME, MY_RECIPES, DETAILS_RECIPE, INGREDIENTES, CONNECTION, DISPLAY_RECIPES } from "../type";
 
 export default (state, action) => {
   const { payload, type } = action;
@@ -37,7 +37,8 @@ export default (state, action) => {
       };
     case CONNECTION:
       return { ...state, connection_type: payload}
-
+    case DISPLAY_RECIPES :
+      return {...state, display_recipes:payload}
     default:
       return state;
   }

@@ -87,8 +87,8 @@ const Pasos = (props) => {
   const handleFinishedCreateRecipe = async () => {
     if (saveData) {
         let obj ={receta:item1, ingredientes:item2, pasos:item3}
-        console.log("receta", obj);
-        // await handleAsyncStorage(recipeCellular);
+        await handleAsyncStorage(obj);
+
     }else{
         await handleMyRecipes();
         setStep(1);
