@@ -108,6 +108,7 @@ const NotiState = (props) => {
         console.log(error);
       });
   };
+  //HandleGetREcipeExists nombre=${}
 
   const handleMyRecipes = async () => {
     await axios
@@ -162,7 +163,7 @@ const NotiState = (props) => {
     console.log(name, user, ingrediente, noIngrediente);
 
     await axios
-      .get(`${URL}api/recetas/?search=${'Camarones'}&user=${user}&ingrediente=${ingrediente}&notingrediente=${noIngrediente}`, {
+      .get(`${URL}api/recetas/?search=${name}&user=${user}&ingrediente=${ingrediente}&notingrediente=${noIngrediente}`, {
         headers: { Authorization: `Bearer ${state.token}` },
       })
       .then((resp) => {

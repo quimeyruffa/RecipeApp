@@ -17,10 +17,10 @@ import NetInfo from "@react-native-community/netinfo";
 
 const HomePage = (props) => {
   const { navigation } = props;
-  const [search, setSearch] = useState('');
-  const [user, setUser] = useState('');
-  const [ingrediente, setIngrediente] = useState('');
-  const [noIngredient, setNoIngredient] = useState('');
+  const [search, setSearch] = useState("");
+  const [user, setUser] = useState("");
+  const [ingrediente, setIngrediente] = useState("");
+  const [noIngredient, setNoIngrediente] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const {
     handleGetRecipes,
@@ -58,7 +58,6 @@ const HomePage = (props) => {
   return (
     <View style={homePage.container}>
       <View style={homePage.buttonContainer}>
-       
         <Pressable
           onPress={() => setModalVisible(!modalVisible)}
           style={{
@@ -73,6 +72,8 @@ const HomePage = (props) => {
       </View>
       {modalVisible && (
         <IngredientesModal
+          setNoIngrediente={setNoIngrediente}
+          setIngredienteSearch={setIngrediente}
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
         />
@@ -82,17 +83,22 @@ const HomePage = (props) => {
           <TextInput
             style={homePage.input}
             onChangeText={setSearch}
-            value={search !== null ? search : "Recipe"}
+            value={search !== "" ? search : "Recipe"}
           />
         </View>
         <View style={homePage.inputContainer}>
           <TextInput
             style={homePage.input}
             onChangeText={setUser}
-            value={user !== null ? user : "User"}
+            value={user !== "" ? user : "User"}
           />
         </View>
-        <FontAwesome name="search" size={30} color="black" onPress={handleSearch}/>
+        <FontAwesome
+          name="search"
+          size={30}
+          color="black"
+          onPress={handleSearch}
+        />
       </View>
 
       <ScrollMenu status="list" state={1} />
@@ -104,7 +110,9 @@ const HomePage = (props) => {
           alignItems: "flex-end",
         }}
       >
-        <Pressable onPress={() => navigation.navigate("AllRecipes")}>
+        <Pressable onPress={async() => {
+          await handleGetRecipes()
+          navigation.navigate("AllRecipes")}}>
           <Text
             style={{
               color: "#FA4A0C",

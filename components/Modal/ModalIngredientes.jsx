@@ -1,13 +1,13 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
+import { TextInput, Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import NotiContext from "../../Context/notifications/NotiContext";
+import homePage from "../../styles/style.menu";
 import Item from "./Item";
 
 const IngredientesModal = (props) => {
-  const { modalVisible, setModalVisible } = props;
-
+  const { modalVisible, setModalVisible, setNoIngrediente, setIngredienteSearch } = props;
   const { Ingredientes } = useContext(NotiContext);
-  
+  const [ingrediente, setIngrediente] = useState("Search");
 
   useEffect(() => {
     console.log(Ingredientes);
@@ -26,8 +26,19 @@ const IngredientesModal = (props) => {
           <View style={styles.modalView}>
             <View style={styles.modalText}>
               <Text>Ingredientes</Text>
-              {Ingredientes?.map((item, index) => (
-                <Item item={item} index={index} key={index}/>
+              <TextInput
+                style={homePage.inputSearch}
+                onChangeText={setIngrediente}
+                value={ingrediente}
+              />
+              {Ingredientes?.filter(item => {
+                if(ingrediente === 'Search' || ingrediente ===''){
+                  return ;
+                }else{
+                  return item.nombre.includes(ingrediente)
+                }
+              }).map((item, index) => (
+                <Item item={item} index={index} key={index} setIngredienteSearch={setIngredienteSearch} setNoIngrediente={setNoIngrediente}/>
               ))}
             </View>
             <Pressable

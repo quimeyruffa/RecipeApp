@@ -25,6 +25,18 @@ const homePage = StyleSheet.create({
     paddingLeft: 10,
 
   },
+  inputSearch: {
+    width: 250,
+    backgroundColor: "#FA4A0C",
+    display: "flex",
+    color:'white',
+    paddingLeft: 10,
+    borderBottomStartRadius: 40,
+    borderBottomRightRadius: 40,
+    borderTopStartRadius: 40,
+    borderTopRightRadius: 40,
+
+  },
   Containerselect:{
     width: '100%',
     display: "flex",

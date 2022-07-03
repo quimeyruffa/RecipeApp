@@ -7,7 +7,6 @@ import styles from "../../styles/style.recipe";
 import Item from "../../components/Card/Item";
 import axios from "axios";
 import { URL } from "../../Context/type";
-import IngredientesModalEdit from "../../components/Modal/ModalEdit";
 
 const MyRecipes = () => {
   const {handleMyRecipes, my_recipes, token} = useContext(NotiContext);
@@ -37,7 +36,7 @@ const handleEditRecipe = (item) =>{
 }
   return (
     <View style={{flex:1}}>
-    <IngredientesModalEdit modalVisible={openModalEdit}  setModalVisible={setOpenModalEdit} />
+    
     {!(my_recipes === []) ?
       <View style={styles.container}>
         <Text style={{fontSize:20, marginBottom:10}}>Mis Recetas</Text>

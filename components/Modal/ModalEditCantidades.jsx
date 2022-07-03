@@ -2,17 +2,11 @@ import { Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import NumericInput from 'react-native-numeric-input'
 
-const IngredientesModalEdit = (props) => {
-  const { modalVisible, setModalVisible, setDividir, dividir, setCantidades, cantidades } = props;
+const CantidadesModalEdit = (props) => {
+  const { modalVisible, setModalVisible } = props;
  
 
-  const handleOnChangeValue = (value) =>{
-    setDividir(false);
-    if(value > 1){
-
-      setCantidades(value);
-    }
-  }
+ 
 
   
   return (
@@ -28,31 +22,9 @@ const IngredientesModalEdit = (props) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.modalText}>
-              <Text>Editar Porciones</Text>
+              <Text>Editar Cantidades</Text>
             </View>
 
-            <View style={styles.modalText}>
-              <View style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
-                
-              <Text>Dividir a la mitad las Porciones</Text>
-              <Pressable
-            
-              onPress={() => setDividir(true)}
-            >
-              {dividir ? 
-            <AntDesign name="checksquare" size={24} color="black" />
-            :
-            <AntDesign name="checksquareo" size={24} color="black" />
-            }
-            </Pressable>
-                 </View>
-           
-            <Text>Definir cantidad de Porciones</Text>
-            <NumericInput 
-            onChange={handleOnChangeValue}
-            value={cantidades}
-          />
-            </View>
 
             <Pressable
               style={[styles.button, styles.buttonClose]}
@@ -111,4 +83,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default IngredientesModalEdit;
+export default CantidadesModalEdit;
