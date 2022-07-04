@@ -3,14 +3,18 @@ import { StyleSheet, Pressable, Text } from "react-native";
 
  const ListItem = (props) => {
   const { text, key } = props.item;
- 
+  const [select, setSelect] = React.useState(false)
 
 
   return (
     <Pressable
       key={key}
       id={text}
-      onPress={()=>props.handlePress(text)}
+      onPress={()=> {
+        props.handlePress(text, select)
+        setSelect(!select)  
+      } 
+      }
       style={styles.item}
     >
       <Text style={props.press === text ? styles.buttomPressed : styles.buttom}>

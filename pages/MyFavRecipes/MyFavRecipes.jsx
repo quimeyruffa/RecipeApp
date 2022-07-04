@@ -5,15 +5,21 @@ import { useContext } from "react";
 import NotiContext from "../../Context/notifications/NotiContext";
 import styles from "../../styles/style.recipe";
 import ItemFav from "../../components/Card/ItemFav";
+import { useNavigation } from '@react-navigation/native';
+import { MaterialIcons } from "@expo/vector-icons";
 
 const MyFavRecipes = () => {
-  const {handleSetFavoritosReload, favoritos, handleDeleteFavorito} = useContext(NotiContext);
+  const {handleSetFavoritosReload, favoritos, handleDeleteFavorito, handleDetailsDownload} = useContext(NotiContext);
+  const navigation = useNavigation(); 
 
   useEffect(()=>{handleSetFavoritosReload()},[])
 
   useEffect(()=>{},[favoritos])
 
-
+ const handleShowDetails = async (recipe) => {
+    await handleDetailsDownload(recipe)
+    navigation.navigate("Favoritos")
+  }
 
   return (
     <View style={{flex:1}}>
@@ -25,7 +31,7 @@ const MyFavRecipes = () => {
           data={favoritos}
           renderItem={({item}) =>{
             
-            return <ItemFav data={item} handleDeleteFavorito={handleDeleteFavorito}/>
+            return <ItemFav data={item} handleDeleteFavorito={handleDeleteFavorito} handleShowDetails={handleShowDetails}/>
           }}
           ItemSeparatorComponent={()=>{
             return <View style={{marginBottom:5}}></View>
@@ -33,15 +39,15 @@ const MyFavRecipes = () => {
         />
 
           
+
       </View>
     :
       <View style={[style.general]}>
         <Feather name="calendar" size={200} color="#C7C7C7" />
-        <Text style={[style.text]}>No publicaste ninguna receta</Text>
+        <Text style={[style.text]}>No tienes favoritos</Text>
       </View>
     
     }
-    
     </View>
   );
 };

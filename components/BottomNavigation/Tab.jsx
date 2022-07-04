@@ -13,6 +13,7 @@ import SaveRecipes from "../../pages/Recipes/SaveRecipes";
 import AllRecipes from "../../pages/Recipes/AllRecipes";
 import DetailsCardRecipe from "../Card/DetailsCardRecipe";
 import DetailsCardRecipeDownload from "../Card/DetailsCardRecipeDownload";
+import DetailsCardFavorito from "../../pages/MyFavRecipes/MyFavRecipesDetails";
 
 const Tab = createBottomTabNavigator();
 
@@ -96,7 +97,14 @@ const Tabs = () => {
         />
 
 
-       
+<Tab.Screen
+          name="Favoritos"
+          component={DetailsCardFavorito}
+          options={{
+            tabBarButton: (props) => null, //like this
+            tabBarVisible: false, //this is additional if you want to hide the whole bottom tab from the screen
+          }}
+        />
 
         <Tab.Screen
           name="DetailRecipeDownload"

@@ -32,6 +32,7 @@ const HomePage = (props) => {
   } = useContext(NotiContext);
 
   useEffect(() => {
+    
     handleGetRecipes();
     handleGetIngredientes();
   }, []);
@@ -51,6 +52,18 @@ const HomePage = (props) => {
       console.log("Is connected?", state.isConnected);
     });
   };
+
+  const handlePress= async (val) =>{
+    
+    if(val === ''){
+      setPress('')
+    }else{
+    setPress(val)
+    await handleFilterRecipe(search, user, ingrediente, noIngredient, val);
+    navigation.navigate("AllRecipes");
+    }
+  
+  }
 
   const handleSearch = async () => {
     await handleFilterRecipe(search, user, ingrediente, noIngredient, press);
@@ -105,7 +118,7 @@ const HomePage = (props) => {
         />
       </View>
 
-      <ScrollMenu status="list" state={1} press={press} setPress={setPress}/>
+      <ScrollMenu status="list" state={1} press={press} setPress={ handlePress} />
       <View
         style={{
           width: "100%",

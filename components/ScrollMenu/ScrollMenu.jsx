@@ -17,7 +17,13 @@ const ScrollMenu = (props) => {
 
   useEffect(() => {}, [display_recipes]);
 
-  const handlePress = (value) => setPress(value);
+  const handlePress = (value, status) => {
+    if(!status){
+      setPress(value)
+    }else{
+      setPress('')
+    }
+  };
   return (
     <View style={props.state === 1 ? styles.container : styles.containerCard}>
       <StatusBar style="light" />

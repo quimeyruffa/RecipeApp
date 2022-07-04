@@ -91,6 +91,8 @@ const Pasos = (props) => {
     if (saveData) {
         let obj ={receta:item1, ingredientes:item2, pasos:item3}
         await handleAsyncStorage(obj);
+        setStep(1);
+        navigation.navigate("Home");
 
     }else{
         await handleMyRecipes();
