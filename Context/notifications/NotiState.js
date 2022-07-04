@@ -10,7 +10,7 @@ const NotiState = (props) => {
     token: false,
     username: "",
     recipes: [],
-    display_recipes:[],
+    display_recipes: [],
     my_recipes: [],
     unidades: [],
     create_recipe: "",
@@ -18,28 +18,72 @@ const NotiState = (props) => {
     Ingredientes: [],
     descargas: [],
     favoritos: [],
+    descargas: [],
+    detailsDownload: []
   };
 
   const [state, dispatch] = useReducer(NotiReducer, initialState);
 
+  const handleDetailsDownload = (recipe) => {
+    dispatch({ type: "DETAILSDOWLOAD", payload: recipe });
+  }
   const handleConnectiontype = async (value) => {
     dispatch({ type: "CONNECTION", payload: value });
+
+
+    const data = await AsyncStorage.getItem("recetasEditadas");
+
+    if (data !== null) {
+      let obj = JSON.parse(data)
+      dispatch({ type: "DESCARGAS", payload: obj });
+    }
+
   };
   const handleAsyncStorage = async (value) => {
     try {
-      console.log(JSON.stringify(value));
+
       await AsyncStorage.setItem("recetasDescargadas", JSON.stringify(value));
     } catch (err) {
       console.log(err);
     }
   };
 
+  const handleAsyncStorageRecipeEdit = async (recipe) => {
+    const value = await AsyncStorage.getItem("recetasEditadas")
+    let res = false;
+    let l = JSON.parse(value)
+
+    if (value === null) {
+      try {
+        await AsyncStorage.setItem("recetasEditadas", JSON.stringify([recipe]));
+        dispatch({ type: "DESCARGAS", payload: [recipe] });
+      } catch (err) {
+        console.log(err);
+      }
+    } else if (l.length < 5) {
+      try {
+        let obj = await AsyncStorage.getItem("recetasEditadas")
+        let item = JSON.parse(obj)
+        let p = item.push(recipe)
+
+
+        await AsyncStorage.setItem("recetasEditadas", JSON.stringify(item));
+        dispatch({ type: "DESCARGAS", payload: item });
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      res = true;
+    }
+
+    return res;
+  };
   const handleGetAsyncStorage = async () => {
     try {
       const value = await AsyncStorage.getItem("recetasDescargadas");
       if (value !== null) {
         let obj = JSON.parse(value);
-        console.log(obj.pasos);
+
         handleCreateRecipes(obj.receta[0], obj);
       }
     } catch (err) {
@@ -90,7 +134,7 @@ const NotiState = (props) => {
       .post(`${URL}api/recetas/utilizados/`, ingredientes, {
         headers: { Authorization: `Bearer ${state.token}` },
       })
-      .then(async (resp) => {})
+      .then(async (resp) => { })
       .catch((error) => {
         console.log(error);
       });
@@ -102,7 +146,7 @@ const NotiState = (props) => {
         headers: { Authorization: `Bearer ${state.token}` },
       })
       .then(async (resp) => {
-        console.log(resp);
+
       })
       .catch((error) => {
         console.log(error);
@@ -131,19 +175,35 @@ const NotiState = (props) => {
         dispatch({ type: "USERNAME", payload: resp.data.username });
         dispatch({ type: "TOKEN", payload: resp.data.token });
       })
-      .catch((error) => {
-        res = true;
-        console.log(error);
-      });
+      .catch(function (error) {
+        res = error.response.data
+        console.log(error.response.data);
+      })
 
     return res;
+  };
+
+  const handleRecoverPassword = async (user) => {
+    console.log(user)
+    await axios
+      .post("https://adapicooking.herokuapp.com/api/users/redeem/", user)
+      .then((resp) => {
+        dispatch({ type: "USERNAME", payload: resp.data.username });
+        dispatch({ type: "TOKEN", payload: resp.data.token });
+      })
+      .catch(function (error) {
+
+        console.log(error.response.data);
+      })
+
+
   };
   const handleLogin = async (user) => {
     let res = false;
     await axios
       .post("https://adapicooking.herokuapp.com/api/users/login/", user)
       .then((resp) => {
-        console.log(resp);
+        console.log(resp.data.token)
         dispatch({ type: "USERNAME", payload: resp.data.username });
         dispatch({ type: "TOKEN", payload: resp.data.token });
       })
@@ -159,11 +219,12 @@ const NotiState = (props) => {
     dispatch({ type: "CREATE_RECIPE", payload: recipe });
   };
 
-  const handleFilterRecipe = async  (name = '', user = '', ingrediente = '', noIngrediente = '') => {
-    console.log(name, user, ingrediente, noIngrediente);
+
+  const handleFilterRecipe = async (name = '', user = '', ingrediente = '', noIngrediente = '', tipo='') => {
+    console.log(name, user, ingrediente, noIngrediente, tipo);
 
     await axios
-      .get(`${URL}api/recetas/?search=${name}&user=${user}&ingrediente=${ingrediente}&notingrediente=${noIngrediente}`, {
+      .get(`${URL}api/recetas/?search=${name}&user=${user}&ingrediente=${ingrediente}&notingrediente=${noIngrediente}&tipo=${tipo}`, {
         headers: { Authorization: `Bearer ${state.token}` },
       })
       .then((resp) => {
@@ -174,6 +235,8 @@ const NotiState = (props) => {
         console.log(error);
       });
   }
+
+  
   const handleGetRecipes = async () => {
     await axios
       .get("https://adapicooking.herokuapp.com/api/recetas/", {
@@ -214,19 +277,19 @@ const NotiState = (props) => {
       });
   };
 
-  const handleUpload = (image, hook) =>{
+  const handleUpload = (image, hook) => {
 
     const data = new FormData();
     data.append('file', image)
     data.append('upload_preset', 'dev_setups')
     data.append("cloud_name", 'dv8hvjcim')
-    fetch("https://api.cloudinary.com/v1_1/dv8hvjcim/image/upload",{
-      method:'post',
-      body:data
-    }).then(res=>res.json())
-    .then(data=>{
-      hook(data.url)
-    })
+    fetch("https://api.cloudinary.com/v1_1/dv8hvjcim/image/upload", {
+      method: 'post',
+      body: data
+    }).then(res => res.json())
+      .then(data => {
+        hook(data.url)
+      })
   }
   const handleGetIngredientes = async () => {
     await axios
@@ -235,6 +298,78 @@ const NotiState = (props) => {
       })
       .then((resp) => {
         dispatch({ type: "INGREDIENTES", payload: resp.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+
+  const handleSetFavoritosReload = async () => {
+    await axios
+      .get(`${URL}api/recetas/favoritos/`, {
+        headers: { Authorization: `Bearer ${state.token}` },
+      })
+      .then((resp) => {
+        dispatch({ type: "FAVORITOS", payload: resp.data });
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleSetFavorito = async (id) => {
+
+    await axios
+      .post(`${URL}api/recetas/favoritos/`, { 'id': id }, {
+        headers: { Authorization: `Bearer ${state.token}` },
+      })
+      .then((resp) => {
+        handleSetFavoritosReload()
+      })
+      .catch((error) => {
+
+        console.log(error);
+      });
+
+
+  };
+
+  const handleDeleteFavorito = async (id) => {
+    console.log(id)
+    var FormData = require('form-data');
+    var data = new FormData();
+    data.append('id', id);
+
+    var config = {
+      method: 'delete',
+      url: 'https://adapicooking.herokuapp.com/api/recetas/favoritos/',
+      headers: {
+        'Authorization': `Bearer ${state.token}`
+      },
+      data: data
+    };
+
+    axios(config)
+      .then(function (response) {
+        handleSetFavoritosReload()
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+  };
+
+  const handleDeleteRecipe = async (index) => {
+    console.log(index)
+    await axios
+      .delete(`${URL}api/recetas/${index}/`, {
+        headers: { Authorization: `Bearer ${state.token}` },
+      })
+      .then(async () => {
+        await handleMyRecipes()
       })
       .catch((error) => {
         console.log(error);
@@ -252,7 +387,10 @@ const NotiState = (props) => {
         details_recipe: state.details_recipe,
         Ingredientes: state.Ingredientes,
         connection_type: state.connection_type,
-        display_recipes:state.display_recipes,
+        display_recipes: state.display_recipes,
+        descargas: state.descargas,
+        favoritos: state.favoritos,
+        detailsDownload: state.detailsDownload,
         handleLogin,
         handleGetRecipes,
         getUnidades,
@@ -265,7 +403,16 @@ const NotiState = (props) => {
         handleAsyncStorage,
         handleGetAsyncStorage,
         handleUpload,
-        handleFilterRecipe
+        handleFilterRecipe,
+        handleAsyncStorageRecipeEdit,
+        handleSetFavorito,
+        handleSetFavoritosReload,
+        handleDeleteFavorito,
+        handleDetailsDownload,
+        handleDeleteRecipe,
+        handleRecoverPassword
+
+
       }}
     >
       {props.children}

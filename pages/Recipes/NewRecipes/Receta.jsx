@@ -19,18 +19,21 @@ const Receta = (props) => {
   const [save, setSave] = useState(false);
   const [tipos, setTipo] = useState("Ensalada");
   const [continuar, setContinuar] = useState(false);
+  
+
   const { token, handleCreateRecipe, handleGetRecipes, handleUpload } =
     useContext(NotiContext);
-  const { saveData, setRecipeCellular, recipeCellular } = props;
+  const { saveData, setRecipeCellular, recipeCellular,  setIdDelete } = props;
+
   const unidades = [
-    "Ensalada",
-    "Carne",
-    "Salsa",
+    "Vegetariano",
+    "Sushi",
     "Postre",
-    "Sopa",
-    "Bebida",
     "Pizza",
-    "Pollo",
+    "Pasta",
+    "Hamburguesa",
+    "Asado",
+    "Americana",
   ];
 
   
@@ -60,12 +63,19 @@ const Receta = (props) => {
 
   const handleControlNameRecipe = async () => {
     await axios
-      .get(`${URL}api/recetas/verify/?nombre=${text}`, {
+      .get(`${URL}api/recetas/?search=${text}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((resp) => {
-        props.setShowMessage(resp.data.message);
-        setSave(!resp.data.message);
+        
+        if(resp.data[0]=== undefined) {
+          setSave(true);
+
+        }else{
+          
+          setIdDelete(resp.data[0].id)
+          props.setShowMessage(true);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -81,7 +91,7 @@ const Receta = (props) => {
       imagen: img,
       porciones: cantPorciones,
       cantidadPersonas: cantPorciones,
-      tipo:null,
+      tipo:tipos,
     };
     if (saveData) {
       

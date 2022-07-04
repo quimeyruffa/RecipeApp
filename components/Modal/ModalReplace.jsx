@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
 
-const IngredientesModal = (props) => {
+const IngredientesModalReplace = (props) => {
   const {
     modalVisible,
     setModalVisible,
     message,
-    button_function = null,
-    options = null,
-    setOption = null
+    handleConfirmar
   } = props;
   return (
     <View>
@@ -24,51 +22,28 @@ const IngredientesModal = (props) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>{message}</Text>
-
-            {options !== null &&
-              <View style={{ display: 'flex', flexDirection: 'column' }}>
-                {options.map((item, index) => (
-                  <Pressable
-                  key={index}
-                    onPress={() => {
-                      setOption(item, 'username')
-                      setModalVisible(!modalVisible)
-                    }}>
-                    <Text style={{color:'black'}}>{item} {' '}</Text> 
-                  </Pressable>
-                ))}
-              </View>
-            }
-
-
-
-            {button_function !== null ? (
+        
               <View>
                 <Pressable
-                  style={[styles.button, styles.buttonClose, { marginBotton: 5 }]}
-                  onPress={() => { setModalVisible(!modalVisible) }}>
-                  <Text style={styles.textStyle}>Continuar</Text>
+                  style={[styles.button, styles.buttonClose, {marginBotton:5}]}
+                  onPress={() => { 
+                    handleConfirmar(false) 
+                    setModalVisible(!modalVisible)
+                     }}>
+                  <Text style={styles.textStyle}>Cancelar</Text>
                 </Pressable>
-
+           
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
-                  onPress={() => {
-
-                    button_function(true)
-                    setModalVisible(!modalVisible)
-                  }}
+                  onPress={() => { 
+                  
+                    handleConfirmar(true)
+                    setModalVisible(!modalVisible)}}
                 >
-                  <Text style={styles.textStyle}>Subir la recera cuando este conectado a una red gratuita</Text>
+                  <Text style={styles.textStyle}>Reemplazar</Text>
                 </Pressable>
               </View>
-            ) : (
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text style={styles.textStyle}>Cerrar</Text>
-              </Pressable>
-            )}
+        
           </View>
         </View>
       </Modal>
@@ -120,4 +95,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default IngredientesModal;
+export default IngredientesModalReplace;

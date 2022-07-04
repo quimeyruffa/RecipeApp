@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomePage from "../../pages/Menu/Menu";
-import Profile from "../../pages/Profile/Profile";
+import MyFavRecipes from "../../pages/MyFavRecipes/MyFavRecipes";
 
 import { Text, View, TouchableOpacity } from "react-native";
 import { Entypo } from "@expo/vector-icons";
@@ -8,11 +8,11 @@ import NewRecipes from "../../pages/Recipes/NewRecipes";
 ("@react-navigation/native-stack");
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
 import MyRecipes from "../../pages/Recipes/MyRecipes";
 import SaveRecipes from "../../pages/Recipes/SaveRecipes";
 import AllRecipes from "../../pages/Recipes/AllRecipes";
 import DetailsCardRecipe from "../Card/DetailsCardRecipe";
+import DetailsCardRecipeDownload from "../Card/DetailsCardRecipeDownload";
 
 const Tab = createBottomTabNavigator();
 
@@ -28,7 +28,7 @@ const CustomTabBarButton = ({ children, onPress }) => (
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
-        zIndex:20
+        zIndex: 20
       }}
     >
       {" "}
@@ -95,9 +95,21 @@ const Tabs = () => {
           }}
         />
 
-        
 
-        
+       
+
+        <Tab.Screen
+          name="DetailRecipeDownload"
+          component={DetailsCardRecipeDownload}
+          options={{
+            tabBarButton: (props) => null, //like this
+            tabBarVisible: false, //this is additional if you want to hide the whole bottom tab from the screen
+          }}
+        />
+
+
+
+
         <Tab.Screen
           name="Recipes"
           component={MyRecipes}
@@ -148,13 +160,13 @@ const Tabs = () => {
           }}
         />
         <Tab.Screen
-          name="Profile"
-          component={Profile}
+          name="MyFavRecipes"
+          component={MyFavRecipes}
           options={{
             tabBarIcon: ({ focused }) => (
               <View>
-                <Feather
-                  name="user"
+                <AntDesign
+                  name="heart"
                   size={34}
                   style={{
                     color: focused ? "#FA4A0C" : "#C7C7C7",
@@ -180,8 +192,7 @@ const Tabs = () => {
           options={{
             tabBarIcon: ({ focused }) => (
               <View>
-                <FontAwesome
-                  name={focused ? "bookmark" : "bookmark-o"}
+                <AntDesign name="arrowdown"
                   size={34}
                   style={{
                     color: focused ? "#FA4A0C" : "#C7C7C7",

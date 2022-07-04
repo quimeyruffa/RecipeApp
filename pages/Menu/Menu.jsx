@@ -22,6 +22,7 @@ const HomePage = (props) => {
   const [ingrediente, setIngrediente] = useState("");
   const [noIngredient, setNoIngrediente] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
+  const [press, setPress]= useState("");
   const {
     handleGetRecipes,
     handleGetIngredientes,
@@ -52,7 +53,7 @@ const HomePage = (props) => {
   };
 
   const handleSearch = async () => {
-    await handleFilterRecipe(search, user, ingrediente, noIngredient);
+    await handleFilterRecipe(search, user, ingrediente, noIngredient, press);
     navigation.navigate("AllRecipes");
   };
   return (
@@ -78,19 +79,22 @@ const HomePage = (props) => {
           setModalVisible={setModalVisible}
         />
       )}
-      <View style={{ display: "flex", flexDirection: "row", width: "100%" }}>
+      <View style={{ display: "flex", flexDirection: "row", width: "75%" }}>
         <View style={homePage.inputContainer}>
+     
+          <Text>Recipe</Text>
           <TextInput
             style={homePage.input}
             onChangeText={setSearch}
-            value={search !== "" ? search : "Recipe"}
+            value={search}
           />
         </View>
         <View style={homePage.inputContainer}>
+        <Text>User</Text>
           <TextInput
             style={homePage.input}
             onChangeText={setUser}
-            value={user !== "" ? user : "User"}
+            value={user}
           />
         </View>
         <FontAwesome
@@ -101,7 +105,7 @@ const HomePage = (props) => {
         />
       </View>
 
-      <ScrollMenu status="list" state={1} />
+      <ScrollMenu status="list" state={1} press={press} setPress={setPress}/>
       <View
         style={{
           width: "100%",
@@ -125,7 +129,7 @@ const HomePage = (props) => {
           </Text>
         </Pressable>
       </View>
-      <ScrollMenu status="list" state={2} />
+      <ScrollMenu status="list" state={2} press={press} setPress={setPress}/>
     </View>
   );
 };

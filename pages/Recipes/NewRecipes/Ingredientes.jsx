@@ -220,7 +220,7 @@ const Ingredientes = (props) => {
             >
               <Text>{item.ingrediente}</Text>
               <View style={{ display: "flex", flexDirection: "row" }}>
-                <MaterialIcons name="edit" size={30} color="#FA4A0C" />
+  
                 <MaterialIcons
                   name="delete"
                   size={30}

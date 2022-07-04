@@ -9,15 +9,17 @@ import Pasos from "./NewRecipes/Pasos";
 import Receta from "./NewRecipes/Receta";
 import NotiContext from "../../Context/notifications/NotiContext";
 import { useContext } from "react";
+import IngredientesModalReplace from "../../components/Modal/ModalReplace";
 
 const NewRecipes = (props) => {
-  const { connection_type } = useContext(NotiContext);
+  const { connection_type, handleDeleteRecipe} = useContext(NotiContext);
   const [step, setStep] = useState(1);
   const [continuar, setContinue] = useState(false);
   const [aceptar, setAceptar] = useState(connection_type === "wifi");
   const [recipeCellular, setRecipeCellular] = useState([]);
   const [ingredienteCellular, setIngredienteCellular] = useState([]);
   const [pasosCellular, setPasosCellular] = useState([]);
+  const [idDelete, setIdDelete] = useState(0);
   const { navigation } = props;
   // Control cartas
 
@@ -33,6 +35,12 @@ const NewRecipes = (props) => {
     }
   }, []);
 
+
+  const handleConfirmar = async (confirmar)  =>{
+      if(confirmar){
+        await handleDeleteRecipe(idDelete)
+      }
+  }
  
 
   useEffect(() => {console.log(connection_type)}, [connection_type]);
@@ -50,10 +58,11 @@ const NewRecipes = (props) => {
         
       />
 
-      <IngredientesModal
+      <IngredientesModalReplace
+      handleConfirmar={handleConfirmar}
         modalVisible={showMessage}
         setModalVisible={setShowMessage}
-        message="La receta ya existe, por favor elija otro nombre"
+        message="'La receta ya existe, puede reemplazarla o cambiar el nombre'"
       />
 
       <View style={styles.container}>
@@ -61,6 +70,7 @@ const NewRecipes = (props) => {
           <Receta
             setShowMessage={setShowMessage}
             setStep={setStep}
+            setIdDelete={setIdDelete}
             step={step}
             saveData={continuar}
             setRecipeCellular={setRecipeCellular}

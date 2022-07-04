@@ -6,12 +6,16 @@ import Form_SignIn from "../../components/form/Form_SignIn";
 import { Feather } from "@expo/vector-icons";
 import NotiContext from "../../Context/notifications/NotiContext";
 import IngredientesModal from "../../components/Modal/Modal";
-
+import Form_SignUp from "../../components/form/Form_SignUp";
+import axios from 'axios';
 const Login = (props) => {
   const [tabs, setTabs] = useState(1);
   const [modalVisible, setModalVisible] = useState(false);
   const { handleLogin, handleRegister } = useContext(NotiContext);
   const [loading, setLoading] = useState(false);
+  const [label, setlabel] =useState("Error al logear el usuario")
+  const [options, setOptions] = useState([])
+ 
   const [user, setUser] = useState({
     username: "",
     password: "",
@@ -45,6 +49,8 @@ const Login = (props) => {
     }
   };
 
+  
+
   const InputLogin = [
     { id: 1, label: "Alias", name: "username", secureTextEntry: false },
     { id: 2, label: "Password", name: "password", secureTextEntry: true },
@@ -65,21 +71,36 @@ const Login = (props) => {
       setModalVisible(res);
     }
   };
-  
   const handleSubmitRegister = async () => {
     setLoading(true);
     let res = await handleRegister(register);
-    if (res) {
-      setLoading(!res);
-      setModalVisible(res);
+    if (res !== false) {
+      setOptions(res.options)
+      setlabel(res.detail)
+      setModalVisible(true);
     }
   };
+
+  const handleResetPassword = async (email) => {
+    console.log(email)
+    await axios
+      .post("https://adapicooking.herokuapp.com/api/users/reset/", {'email': email})
+      .then((resp) => {
+          console.log(resp)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+ };
   return (
     <KeyboardAwareScrollView behavior="height">
       <IngredientesModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        message="Error al logear el usuario"
+        message={label}
+        options={options}
+        setOption={handleChangeValueRegister}
       />
       <View className="container__form">
         <View className="header__form" style={[form.header, form.shadowProp]}>
@@ -123,10 +144,11 @@ const Login = (props) => {
               handleChangeValue={handleChangeValue}
               handleSubmit={handleSubmit}
               value={user}
+              handleResetPassword={handleResetPassword}
             />
           )
         ) : (
-          <Form_SignIn
+          <Form_SignUp
             inputs={InputRegister}
             navigation={props.navigation}
             button="Register"

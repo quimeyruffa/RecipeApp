@@ -3,7 +3,7 @@ import { AntDesign } from '@expo/vector-icons';
 import NumericInput from 'react-native-numeric-input'
 
 const CantidadesModalEdit = (props) => {
-  const { modalVisible, setModalVisible } = props;
+  const { modalVisible, setModalVisible, ingrediente, setCantidadIngrediente, cantIngrediente } = props;
  
 
  
@@ -25,7 +25,7 @@ const CantidadesModalEdit = (props) => {
               <Text>Editar Cantidades</Text>
             </View>
 
-
+            <NumericInput value={cantIngrediente} onChange={value => setCantidadIngrediente(value)} />
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}

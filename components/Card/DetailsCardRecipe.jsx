@@ -13,25 +13,68 @@ import NotiContext from "../../Context/notifications/NotiContext";
 import { useNavigation } from "@react-navigation/native";
 import CarouselCards from "../Carousel/Carousel";
 import IngredientesModalEdit from "../Modal/ModalEdit";
-import NumericInput from 'react-native-numeric-input'
-import CantidadesModalEdit from "../Modal/ModalEditCantidades";
+import CantidadesModalEdit from '../Modal/ModalEditCantidades'
+import IngredientesModal from "../Modal/Modal";
+
 const DetailsCardRecipe = () => {
   const navigation = useNavigation();
-  const { details_recipe } = useContext(NotiContext);
+  const { details_recipe, handleAsyncStorageRecipeEdit, handleSetFavorito,handleDeleteFavorito} = useContext(NotiContext);
   const [openModal, setOpenModal] = useState(false);
+  const [openModalUpload, setOpenModalUpload] = useState(false);
   const [openModalIngredientes, setOpenModalIngredientes] = useState(false);
-  const [select, setSelect] = useState(false);
   const [fav, setFav] = useState(false);
   const [dividir, setDividir] = useState(false);
+  const [download, setDownload] = useState(false);
+
+  //INGREDIENTES
   const [cantidades, setCantidades] = useState(details_recipe?.cantidadPersonas);
-  const handleSelect = (value) => setSelect(value);
+  const [cantIngrediente, setCantidadIngrediente] = useState(1);
+  const [ingredienteSelect, setIngrediente] = useState('');
+
+
+  //SAVE RECIPE EDIT
+  const handleSaveEditRecipe = async () => {
+    let array = { 'objeto': [{ 'dividir': dividir, 'cantidades': cantidades, 'cantIngrediente': cantIngrediente }, (details_recipe)] }
+    let res = await handleAsyncStorageRecipeEdit(array)
+    setDownload(!res)
+      setOpenModalUpload(res)
+  }
+
+
   const unidades = ["kg", "ml", "l", "g", "Taza"];
   let divNum = 0.5
 
-  // if step == p (map dots) => orange
-  useEffect(() => {
-    console.log("console details", details_recipe);
+
+  const handleSetIngredienteEdit = (ingrediente) => {
+    setIngrediente(ingrediente)
+    setOpenModalIngredientes(true)
+  }
+
+  const handleCantIngrediente = (value) => {
+    if (value >= 1) {
+      setCantidadIngrediente(value)
+    }
+  }
+
+
+  useEffect(() => { 
+    setCantidades(details_recipe?.cantidadPersonas)
+    setCantidadIngrediente(1)
+    setDividir(false)
+    setFav(false)
+    setDownload(false)
   }, [details_recipe]);
+
+
+  const handleFav = () => {
+    if(!fav){
+      handleSetFavorito(details_recipe.id)
+      setFav(!fav)
+    }else{
+      handleDeleteFavorito(details_recipe.id)
+      setFav(!fav)
+    }
+  }
 
   return (
     <KeyboardAwareScrollView behavior="height">
@@ -46,10 +89,21 @@ const DetailsCardRecipe = () => {
             dividir={dividir}
           />
 
-          <CantidadesModalEdit 
-          modalVisible={openModalIngredientes}
-          setModalVisible={setOpenModalIngredientes}
+          <IngredientesModal
+          setModalVisible={setOpenModalUpload}
+          modalVisible={openModalUpload}
+          message='Ya tenes 5 recetas descargadas'
           />
+
+          <CantidadesModalEdit
+            modalVisible={openModalIngredientes}
+            setModalVisible={setOpenModalIngredientes}
+            ingrediente={ingredienteSelect}
+            setCantidadIngrediente={handleCantIngrediente}
+            cantIngrediente={cantIngrediente}
+
+          />
+
 
 
 
@@ -95,12 +149,10 @@ const DetailsCardRecipe = () => {
             }}
           >
             <View>
-              <FontAwesome
-                name={select ? "bookmark" : "bookmark-o"}
-                size={40}
-                color={select ? "#FA4A0C" : "black"}
-                onPress={() => handleSelect(!select)}
-              />
+              <AntDesign name="arrowdown" size={40}  color={download ? "#FA4A0C" : "#948f8f"} onPress={() => {
+                handleSaveEditRecipe()
+              }} />
+
             </View>
             <View
               style={{
@@ -125,7 +177,7 @@ const DetailsCardRecipe = () => {
                 name="heart"
                 size={30}
                 color={fav ? "#FA4A0C" : "#948f8f"}
-                onPress={() => setFav(!fav)}
+                onPress={handleFav}
               />
             </View>
           </View>
@@ -145,16 +197,28 @@ const DetailsCardRecipe = () => {
             <Feather name="user" size={24} color="#FA4A0C" />
             <Text style={styles.cantPersonas}>
               {dividir ?
-              <>
-              {details_recipe?.cantidadPersonas}{" "}
-              {details_recipe?.cantidadPersonas > 1 ? "personas" : "persona"}
-              </>
-            :
-            <>
-              {cantidades}{" "}
-              {cantidades > 1 ? "personas" : "persona"}
-            </>
-            }
+                <>
+                  {details_recipe?.cantidadPersonas}{" "}
+                  {details_recipe?.cantidadPersonas > 1 ? "personas" : "persona"}
+                </>
+                :
+                <>
+                  {cantIngrediente === 1 ?
+                    (<>
+                      {cantidades}{" "}
+                      {cantidades > 1 ? "personas" : "persona"}
+                    </>
+                    )
+                    :
+                    (
+                      <>
+                        {cantidades * cantIngrediente}{" "}
+                        {cantidades * cantIngrediente > 1 ? "personas" : "persona"}
+                      </>
+                    )
+                  }
+                </>
+              }
             </Text>
           </View>
 
@@ -180,46 +244,32 @@ const DetailsCardRecipe = () => {
           </View>
 
           <View style={[styles.generalSubTitle]}>
-          <View
-            style={{
-              display: "flex",
-              width: "100%",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Pressable onPress={() => setOpenModalIngredientes(true)}>
-              <Text
-                style={{
-                  color: "#FA4A0C",
-                  fontSize: 18,
-                  fontWeight: "bold",
-                  padding: 5,
-                }}
-              >
-                Editar Cantidades
-              </Text>
-            </Pressable>
-          </View>
+            
             <Text style={styles.subTitle}> Ingredientes </Text>
             {details_recipe?.utilizados?.map((ingrediente, index) => (
               <Text key={index} style={styles.subTitleDes}>
                 {ingrediente?.ingrediente} {" "}
-              
-                {cantidades !== details_recipe?.cantidadPersonas ?
-                <>
-                {parseInt(ingrediente?.cantidad) * cantidades}
-                </> 
-                :
-                (dividir ? 
+
+                {!openModalIngredientes && cantidades !== details_recipe?.cantidadPersonas ?
                   <>
-                {parseInt(ingrediente?.cantidad) * divNum}
-                </>:
-                <>
-                {parseInt(ingrediente?.cantidad)}
-                </>
+                    {parseInt(ingrediente?.cantidad) * cantidades}
+                  </>
+                  :
+                  (dividir ?
+                    <>
+                      {parseInt(ingrediente?.cantidad) * divNum}
+                    </> :
+                    <>
+                      {cantIngrediente === 1 ?
+                        (parseInt(ingrediente?.cantidad))
+                        :
+                        (parseInt(ingrediente?.cantidad) * cantIngrediente)
+                      }
+
+                      <AntDesign name="edit" size={24} color="black" onPress={() => handleSetIngredienteEdit(ingrediente)} />
+                    </>
                   )
-                 }
+                }
                 {" "}
                 {unidades[ingrediente?.unidad - 1]}
               </Text>

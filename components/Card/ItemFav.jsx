@@ -4,8 +4,8 @@ import styles from "../../styles/style.recipe";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const Item = (props) => {
-  const { data, handleEditRecipe, handleDeleteRecipe } = props;
+const ItemFav = (props) => {
+  const { data, handleDeleteFavorito } = props;
   
   const leftSwipe = () => {
     return (
@@ -56,11 +56,12 @@ const Item = (props) => {
             alignItems: "center",
           }}
         >
+
           <MaterialIcons
             name="delete"
             size={30}
             color="red"
-            onPress={() => handleDeleteRecipe(data.id)}
+            onPress={() => handleDeleteFavorito(data.id)}
           />
         </View>
       </View>
@@ -68,4 +69,4 @@ const Item = (props) => {
   );
 };
 
-export default Item;
+export default ItemFav;

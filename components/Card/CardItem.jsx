@@ -5,20 +5,13 @@ import { Feather } from "@expo/vector-icons";
 import Img from '../../assets/img/comida.png'
 
 const CardItem = (props) => {
-  const [select, setSelect] = useState(false);
-  const handleSelect = (value) => setSelect(value);
   const {item} = props;
   
   return (
     <View style={styles.cardContainer}>
       <View style={[styles.card, styles.shadow]}>
         <View style={styles.icon}>
-          <FontAwesome
-            name={select ? "bookmark" : "bookmark-o"}
-            size={35}
-            color={select ? "#FA4A0C" : "black"}
-            onPress={() => handleSelect(!select)}
-          />
+          
         </View>
         <View style={styles.general}>
           {item?.imagen ?
@@ -79,7 +72,7 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: "white",
-    height: 350,
+    height: 300,
     width: 200,
     borderRadius: 40,
   },

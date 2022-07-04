@@ -11,7 +11,7 @@ import axios from "axios";
 import { URL } from "../../../Context/type";
 
 const Pasos = (props) => {
-  const { token, create_recipe, handleMyRecipes, handleAsyncStorage } =
+  const { token, create_recipe, handleMyRecipes, handleAsyncStorage, handleUpload } =
     useContext(NotiContext);
   const { saveData, setRecipeCellular, recipeCellular, item1, item2, item3 } =
     props;
@@ -29,7 +29,10 @@ const Pasos = (props) => {
     });
 
     if (!result.cancelled) {
-      setPic(result.uri);
+  
+      
+      let newFile = {uri:result.uri, type:`test/${result.uri.split(".")[1]}`, name:`test.${result.uri.split(".")[1]}`}
+      handleUpload(newFile, setPic);
     }
   };
 
@@ -38,7 +41,7 @@ const Pasos = (props) => {
       let bodyPaso = {
         nroPaso: pasos.length + 1,
         texto: paso,
-        imagen: null,
+        imagen: img,
         receta: create_recipe.id,
       };
 

@@ -9,9 +9,8 @@ import NotiContext from "../../Context/notifications/NotiContext";
 const AllCardFormat = (props) => {
   const {handleDetailsRecipe} = useContext(NotiContext)
   const navigation = useNavigation(); 
-  const [select, setSelect] = useState(false);
   const {recipe} = props;
-  const handleSelect = (value) => setSelect(value);
+
 
   const handleShowDetails = async (index) => {
     await handleDetailsRecipe(index)
@@ -22,12 +21,7 @@ const AllCardFormat = (props) => {
     <View style={styles.cardContainer}>
       <View style={[styles.card, styles.shadow]}>
         <View style={styles.icon}>
-          <FontAwesome
-            name={select ? "bookmark" : "bookmark-o"}
-            size={35}
-            color={select ? "#FA4A0C" : "black"}
-            onPress={() => handleSelect(!select)}
-          />
+         
         </View>
         <View style={styles.general}>
           {recipe.imagen ?  
@@ -132,7 +126,7 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: "white",
-    height: 550,
+    height: 500,
     width: 185,
     borderRadius: 40,
   },

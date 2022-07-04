@@ -12,7 +12,7 @@ import Card from "../Card/Card";
 import ListItem from "./ListItem";
 
 const ScrollMenu = (props) => {
-  const [press, setPress] = useState("");
+  const {press, setPress}= props;
   const { display_recipes } = useContext(NotiContext);
 
   useEffect(() => {}, [display_recipes]);
@@ -67,32 +67,43 @@ const SECTIONS = [
     data: [
       {
         key: "1",
-        text: "Ensalada",
+        text: "Vegetariano",
       },
       {
         key: "2",
-        text: "Carne",
+        text: "Sushi",
       },
 
       {
         key: "3",
-        text: "Salsa",
-      },
-      {
-        key: "4",
         text: "Postre",
       },
       {
+        key: "4",
+        text: "Pizza",
+      },
+      {
         key: "5",
-        text: "Sopa",
+        text: "Pasta",
       },
       {
         key: "6",
-        text: "Bebida",
+        text: "Hamburguesa",
       },
+      {
+        key: "7",
+        text: "Asado",
+      },
+      {
+        key: "8",
+        text: "Americana",
+      },
+      
     ],
   },
 ];
+
+
 
 const styles = StyleSheet.create({
   containerCard: {

@@ -8,13 +8,20 @@ const CarouselCardItem = ({ item, index }) => {
   return (
     <View style={styles.container} key={index}>
 
-     
-      <Image
-        source={{ uri: 'https://res.cloudinary.com/dv8hvjcim/image/upload/v1656693881/dev_setups/test_eddylq.jpg' }}
-        style={styles.image}
-      />
+      {item.imagen ?
+        <Image
+          source={{ uri: item.imagen }}
+          style={styles.image}
+        />
+
+        :
+        <Image
+          source={{ uri: 'https://res.cloudinary.com/dv8hvjcim/image/upload/v1656693881/dev_setups/test_eddylq.jpg' }}
+          style={styles.image}
+        />
+      }
       <Text style={styles.body}>{item.texto}</Text>
-      
+
     </View>
   )
 }

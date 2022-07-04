@@ -8,7 +8,7 @@ const IngredientesModalEdit = (props) => {
 
   const handleOnChangeValue = (value) =>{
     setDividir(false);
-    if(value > 1){
+    if(value >= 1){
 
       setCantidades(value);
     }

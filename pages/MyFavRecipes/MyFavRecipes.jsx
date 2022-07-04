@@ -4,34 +4,28 @@ import { Feather } from "@expo/vector-icons";
 import { useContext } from "react";
 import NotiContext from "../../Context/notifications/NotiContext";
 import styles from "../../styles/style.recipe";
-import Item from "../../components/Card/Item";
+import ItemFav from "../../components/Card/ItemFav";
+
+const MyFavRecipes = () => {
+  const {handleSetFavoritosReload, favoritos, handleDeleteFavorito} = useContext(NotiContext);
+
+  useEffect(()=>{handleSetFavoritosReload()},[])
+
+  useEffect(()=>{},[favoritos])
 
 
-const MyRecipes = () => {
-  const {handleMyRecipes, my_recipes, handleDeleteRecipe} = useContext(NotiContext);
-  const [openModalEdit, setOpenModalEdit] = useState(false);
 
-  useEffect(()=>{handleMyRecipes()},[])
-
-  useEffect(()=>{},[my_recipes])
-
- 
-
-const handleEditRecipe = (item) =>{
-  console.log('Item', item)
-  setOpenModalEdit(true)
-}
   return (
     <View style={{flex:1}}>
     
-    {!(my_recipes === []) ?
+    {!(favoritos === []) ?
       <View style={styles.container}>
-        <Text style={{fontSize:20, marginBottom:10}}>Mis Recetas</Text>
+        <Text style={{fontSize:20, marginBottom:10}}>Mis Favoritos</Text>
         <FlatList 
-          data={my_recipes}
+          data={favoritos}
           renderItem={({item}) =>{
             
-            return <Item data={item} handleDeleteRecipe={handleDeleteRecipe} handleEditRecipe={handleEditRecipe}/>
+            return <ItemFav data={item} handleDeleteFavorito={handleDeleteFavorito}/>
           }}
           ItemSeparatorComponent={()=>{
             return <View style={{marginBottom:5}}></View>
@@ -52,7 +46,7 @@ const handleEditRecipe = (item) =>{
   );
 };
 
-export default MyRecipes;
+export default MyFavRecipes;
 
 const style = StyleSheet.create({
   general:{
